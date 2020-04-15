@@ -1,0 +1,97 @@
+
+//<BUTTONS>====================================================================================================
+.btn{
+	display: inline-block;
+    padding: 10px 43px;
+    background: transparent;
+    border: 2px solid #62d18f;
+	border-radius: 5px;
+	font-weight: 600;
+	position: relative;
+	@include anim(0.3s,0s);
+	font-size: 15px;
+	color: #000;
+	text-transform: uppercase;
+	span{
+		position: relative;
+	}
+	&::before{
+		@include anim(0.3s,0s);
+		content: '';
+		position: absolute;top: 0;left: 0;
+		width: 100%;height: 0;
+		background-color: #3aff89;
+	}
+	&:hover:not(:disabled){
+		color: #ffffff;
+		&::before{
+			height: 100%;
+		}
+	}
+	&.fw{width: 100%;}
+	&:disabled{
+		cursor: auto;
+		border: 2px solid #989898;
+		background-color: #9898983a;
+	}
+	&-w{
+		color: #ffffff;
+	}
+}
+//</BUTTONS>====================================================================================================
+
+//<INPUT>====================================================================================================
+input[type=text],input[type=email],input[type=tel],textarea{-webkit-appearance:none;-moz-appearance:none;appearance:none;}
+.input{
+	border-radius: 0 !important;
+	width: 100%;
+	display: block;
+	padding: 0px 20px;
+	&.focus{}
+	&.err{}
+}
+textarea.input{
+	resize:none;
+	padding: 0px 0px;
+}
+//<INPUT>====================================================================================================
+
+//</INPUT>====================================================================================================
+.shown {
+	position: relative;
+	&__input {
+		border-radius: 0 !important;
+		width: 100%;
+		display: block;
+		padding: 0px 0px 10px 10px;
+		border-bottom: 1px solid #989898;
+		background-color: transparent;
+		outline: none;
+		font-size: 18px;
+		&:focus:not(&-error){
+			border-bottom: 1px solid #4d4d4d;
+		}
+		&:focus ~ .shown__label, &:not(:placeholder-shown) ~ .shown__label{
+			top: -18px;
+			font-size: 12px;
+			color: #4e4e4e;
+		}
+		&-error{
+			border-bottom: 1px solid #ff0000;
+		}
+	}
+	/* .shown__label */
+	&__label {
+		@include anim(0.3s,0s);
+		position: absolute;
+		top: 0px;
+		left: 10px;
+		font-size: 18px;
+		color: #000;
+		pointer-events: none;
+		&-error{
+			color: #ff0000;
+		}
+	}
+}
+//</INPUT>====================================================================================================

@@ -1,0 +1,31 @@
+@import '../../../assets/cssStyle/var.scss';
+
+.header{
+
+    margin: 0px 0px 50px 0px;
+    &__wrap{
+        padding: 50px 0px 0px 0px;
+        @media (max-width:$md4+px){
+            padding: 20px 0px 0px 0px;
+        }
+    }
+
+
+
+
+}
+
+.main{
+    margin: 0px 0px 50px 0px;
+    &__wrap{
+        box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.38);
+        padding: 40px 20px;
+    }
+}
+
+.footer{
+    &__wrap{
+        padding: 10px;
+        box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.38);
+    }
+}

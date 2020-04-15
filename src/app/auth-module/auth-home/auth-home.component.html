@@ -1,0 +1,20 @@
+
+<div class="auth-home">
+  <div class="container">
+    <div class="auth-home__body" >
+      <div class="auth-home__button">
+        <div class="auth-home__sign-in">
+          <a class="btn" routerLink="sign-in"><span>Sign In</span></a>
+        </div>
+        <div class="auth-home__sign-up">
+          <a class="btn" routerLink="sign-up"><span>Sign Up</span></a>
+        </div>
+      </div>
+      <div class="animations-rout"  [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''">
+        <router-outlet #o="outlet"></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
+
+

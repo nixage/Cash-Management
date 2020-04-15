@@ -1,0 +1,43 @@
+
+<div class="pop-up">
+
+  <div class="pop-up__close" (click)="closePopUp()" bodyUnlock></div>
+
+  <div class="pop-up-form">
+    <form [formGroup]="formAdd" novalidate>
+
+      <div class="pop-up-form__title">
+        Сhoose one of the methods of storing money 
+      </div>
+
+      <div class="pop-up-form__savings">
+        <mat-radio-group formControlName="options" >
+          <p class="pop-up-form__item" *ngFor="let item of optionsSavings">
+            <mat-radio-button value="{{item.name}}" style="color: white;">{{item.name}}</mat-radio-button>
+          </p>
+        </mat-radio-group>
+      </div>
+
+      <div class="pop-up-form__amount">
+        <div class="shown">
+          <input type="text" placeholder=" " class="shown__input" formControlName="amount">
+          <div class="shown__label">Write amount</div>
+        </div>
+
+        <div [@inOutAnimation] *ngIf="f.amount.errors && f.amount.touched">
+          <div class="error error-length" *ngIf="f.amount.errors.required">Required</div>
+          <div class="error error-pattern" *ngIf="f.amount.errors.pattern">Only number (0-9)</div>
+        </div>
+
+      </div>
+
+      <div class="pop-up-form__button">
+        <button class="btn btn-w" [disabled]="formAdd.invalid" (click)="addSavings()" bodyUnlock><span>send</span></button>
+      </div>
+
+    </form>
+  </div>
+      
+  
+</div>
+

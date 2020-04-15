@@ -1,0 +1,140 @@
+@import '../../../assets/cssStyle/mixin.scss';
+@import '../../../assets/cssStyle/var.scss';
+
+.section{
+    &__title{
+        font-size: 22px;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 0px 0px 5px 0px;
+        border-bottom: 2px solid rgb(152, 152, 152);
+    }
+}
+
+.section-income {
+    margin: 0px 0px 40px 0px;
+}
+.income {
+
+    &__title {
+    }
+
+    &__item {
+        margin: 0px 15px 10px 0px;
+        min-width: 110px;
+    }
+    &__row{
+        @include flexbox;
+        flex-wrap:wrap;
+        padding: 20px 0px 0px 0px;
+        @media (max-width:$md4+px){
+            justify-content: center;
+        }
+
+    }
+}
+.item {
+    text-align: center;
+    &__name {
+        font-size: 18px;
+        margin: 0px 0px 5px 0px;
+        text-transform: uppercase;
+    }
+
+    &__icon {
+        @include flexbox;justify-content: center;align-self: center;
+        border: 2px solid #179b4c;
+        border-radius: 50%;
+        padding: 17px;
+        width: 70px;
+        margin: 0 auto 10px auto;
+        cursor: pointer;
+        @include anim(0.1s,0s);
+        &:hover{
+            border: 2px solid #18ce61;
+            box-shadow: 0px 0px 10px -1px #18ce61;
+            transform: scale(1.03);
+        }
+    }
+
+    &__amount {
+        font-size: 16px;
+        font-weight: 300;
+    }
+
+}
+.section-saving {
+    margin: 0px 0px 40px 0px;
+}
+.saving {
+
+    &__title {
+    }
+
+    &__item {
+        margin: 0px 15px 0px 0px;
+        min-width: 110px;
+    }
+
+    &__add {
+        @include flexbox;justify-content: center;
+    }
+    &__row{
+        @include flexbox;
+        flex-wrap:wrap;
+        padding: 20px 0px 0px 0px;
+        @media (max-width:$md4+px){
+            justify-content: center;
+        }
+    }
+    &__collumn{
+        margin: 5px 0;
+    }
+}
+
+.add-item {
+    width: 70px;
+    cursor: pointer;
+    padding: 17px;
+    border: 2px solid #353535;
+    border-radius: 50%;
+    @include flexbox;justify-content: center;align-self: center;
+    @include anim(0.1s,0s); 
+    &:hover{
+        border: 2px solid #000000;
+        box-shadow: 0px 0px 10px -1px #000000;
+        transform: scale(1.03);
+    }
+    img{
+
+    }
+}
+
+.section-spends {
+}
+.spends {
+
+    &__title{
+        
+    }
+
+    &__item {
+        margin: 0px 15px 0px 0px;
+        min-width: 110px;
+    }
+
+    &__add {
+        @include flexbox;justify-content: center;
+    }
+    &__row{
+        @include flexbox;
+        flex-wrap:wrap;
+        padding: 20px 0px 0px 0px;
+        @media (max-width:$md4+px){
+            justify-content: center;
+        }
+    }
+    &__collumn{
+        margin: 5px 0;
+    }
+}

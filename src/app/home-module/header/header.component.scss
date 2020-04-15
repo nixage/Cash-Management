@@ -1,0 +1,96 @@
+@import '../../../assets/cssStyle/mixin.scss';
+@import '../../../assets/cssStyle/var.scss';
+.header {
+  &__row {
+    position: relative;
+    @include flexbox;
+    justify-content: center;
+    align-items: center;
+    @media (max-width: 690px){
+      flex-wrap: wrap;
+    }
+  }
+
+  &__menu {
+    margin: 0px 30px 0px 0px;
+    width: 70px;
+    background-color: #62d18f;
+    @include flexbox;justify-content: center;align-items: center;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.38);
+    align-self: stretch;
+    padding: 10px 0px;
+    @media (max-width:$md3+px){
+      margin: 0px 20px 0px 0px;
+    }
+    @media (max-width: 690px){
+      flex: 1 1 100%;
+      margin: 0px 0px 20px 0px;
+    }
+  }
+
+  &__icon {
+  }
+
+  &__user-info {
+    flex: 1 1 100%;
+    background-color: #62d18f;
+    @include flexbox;
+    box-shadow:0px 0px 25px rgba(0, 0, 0, 0.38);
+    padding: 10px 0;
+    @media (max-width:$md3+px){
+      padding: 10px;
+    }
+  }
+}
+
+.user-info{
+  &__row{
+    @include flexbox;
+    @media (max-width:$md3+px){
+      flex-wrap: wrap;
+    }
+  }
+  &__collumn{
+    margin: 0px 0px 0px 40px;
+    @media (max-width:$md1+px){
+      margin: 0px 0px 0px 20px;
+    }
+    @media (max-width:$md2+px){
+      margin: 0px 0px 0px 15px;
+    }
+    @media (max-width:$md3+px){
+      flex: 0 0 50%;
+      margin: 0;
+    }
+    @media (max-width: 690px){
+      flex: 1 1 100%;
+      margin: 5px;
+    }
+  }
+  &__log-out{
+    position: absolute;
+    right: 10px;top: 10px;
+    cursor: pointer;
+  }
+}
+
+.user-item {
+  &__body {
+    @include flexbox;
+    align-items: center;
+  }
+
+  &__image {
+    margin: 0px 10px 0px 0px;
+    @media (max-width:$md3+px){
+      margin: 0px 7px 0px 0px;
+    }
+  }
+
+  &__text {
+    font-size: 16px;
+    @media (max-width:$md3+px){
+      font-size: 15px;
+    }
+  }
+}

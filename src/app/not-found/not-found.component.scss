@@ -1,0 +1,87 @@
+@import '../../assets/cssStyle/mixin.scss';
+@import '../../assets/cssStyle/var.scss';
+.not-found {
+  width: 100%;height: 100vh;
+  @include flexbox;
+  justify-content: center;align-items: center;
+  &__image{
+    background-image: url('../../assets/img/404/john-travolta.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;top: 0;left: 0;width: 100%;height: 100%;
+    z-index: 1;
+    &::before{
+      content: '';
+      position: absolute;
+      top: 0;left: 0;
+      width: 100%;height: 100%;
+      background-color: #00000080;
+      z-index: 2;
+    }
+  }
+
+  &__body {
+    position: relative;
+    color: #ffffff;
+    z-index: 3;
+    text-align: center;
+  }
+
+  &__number {
+    text-align: center;
+    font-size: 144px;
+    margin: 0px 0px 15px 0px;
+    @media (max-width:$md3+px){
+      font-size: 120px;
+    }
+    @media (max-width:$md4+px){
+      font-size: 100px;
+      margin: 0px 0px 10px 0px;
+    }
+  }
+
+  &__title {
+    text-align: center;
+    font-size: 42px;
+    font-weight: 700;
+    margin: 0px 0px 10px 0px;
+    @media (max-width:$md3+px){
+      font-size: 38px;
+    }
+    @media (max-width:$md4+px){
+      font-size: 29px;
+    }
+  }
+
+  &__subtitle {
+    text-align: center;
+    font-size: 32px;
+    margin: 0px 0px 25px 0px;
+    @media (max-width:$md4+px){
+      font-size: 22px;
+    }
+  }
+
+  &__back{
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
+    color: #ffffff;
+    font-size: 32px;
+    position: relative;
+    &:hover{
+      &::after{
+        background-color: #ffffff;
+      }
+    }
+    &::after{
+      @include anim(0.3s,0s);
+      content: '';
+      position: absolute;
+      width: 100%;height: 2px;
+      left: 0;bottom: -10px;
+      background-color: #000000;
+    }
+  }
+}

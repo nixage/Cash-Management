@@ -1,0 +1,205 @@
+/* You can add global styles to this file, and also import other style files */
+// regular style toast ==========================================================================
+@import '~ngx-toastr/toastr';
+// ======================================================================================================
+
+//<МИКСИНЫ>===============================================================================================
+@import './assets/cssStyle/mixin.scss';
+//</МИКСИНЫ>===============================================================================================
+
+//<ПЕРЕМЕННЫЕ>===========================================================================================================
+@import './assets/cssStyle/var.scss';
+//</ПЕРЕМЕННЫЕ>===========================================================================================================
+
+//<ОБНУЛЕНИЕ, ОБЩИЕ ПАРАМЕТРЫ>===============================================================================================
+@import './assets/cssStyle/reset.scss';
+//</ОБНУЛЕНИЕ, ОБЩИЕ ПАРАМЕТРЫ>===============================================================================================
+
+//<ОБОЛОЧКА>===========================================================================================================
+.wrapper{width: 100%;min-height: 100%;overflow: hidden;}
+//</ОБОЛОЧКА>===========================================================================================================
+
+//<ОСНОВНАЯ СЕТКА>===========================================================================================================
+.container{
+	max-width:$mw+px;
+	margin: 0 auto;
+	width: 100%;
+	@media (max-width:$md1+px){
+		max-width: 970px;
+	}
+	@media (max-width:$md2+px){
+		max-width: 750px;
+	}
+	@media (max-width:$md3+px){
+		max-width: none;padding:0 10px;
+	}
+}
+//</ОСНОВНАЯ СЕТКА>===========================================================================================================
+//</Gloval calsses>===========================================================================================================
+
+// SIGN IN FORM =====================================================
+
+.sign-form {
+    padding: 60px 0px;
+    @include flexbox;
+    justify-content: center;
+    @media (max-width:$md3+px){
+        padding: 20px 0;
+    }
+    &__form {
+        padding: 40px;
+        width: 500px;
+    }
+}
+.form-sign {
+    &__login {
+        margin: 0px 0px 40px 0px;
+    }
+    &__password {
+        margin: 0px 0px 40px 0px;
+    }
+    &__first-name {
+        margin: 0px 0px 40px 0px;
+    }
+    &__last-name {
+        margin: 0px 0px 40px 0px;
+    }
+    &__email {
+        margin: 0px 0px 40px 0px;
+    }
+    &__button {
+        text-align: center;
+    }
+    &__message{
+        margin: 10px 0;
+        text-align: center;
+        font-size: 16px;
+        color: #ff0000;
+    }
+}
+
+.pop-up-form{
+    width: 500px;
+    text-align: center;
+
+    &__title{
+        color: #ffffff;
+        margin: 0px 0px 30px 0px;
+        font-size: 22px;
+    }
+
+    &__spends{
+        font-size: 18px;
+        margin: 0px 0px 30px 0px;
+        text-align: left;
+    }
+    &__savings{
+        font-size: 18px;
+        margin: 0px 0px 30px 0px;
+        text-align: left;
+    }
+
+    &__item{
+        margin: 0px 0px 15px 0px;
+        width: calc(100% / 3);
+    }
+
+    &__amount {
+        margin: 0px 0px 30px 0px;
+    }
+
+    &__button {
+    }
+    &__delete {
+        position: absolute;
+        right: -30px;top: 50%;
+        transform: translateY(-50%);
+        &::before{
+            content: "\d7";
+            font-size: 30px; 
+            color: #ff0000;
+            cursor: pointer;
+        }
+    }
+}
+// SIGN IN FORM =====================================================
+
+// ERROR CLASS ======================================================
+.error{
+    margin: 5px 0;
+    font-size: 14px;
+    color: #ff0000;
+}
+mat-radio-button{
+    .mat-radio-outer-circle {
+        border-color: rgba(0, 255, 8, 0.54);
+    }
+}
+// ERROR CLASS ======================================================
+
+// POP UP =====================================================
+.pop-up{
+    position: fixed;
+    width: 100%;height: 500px;
+    top: 50%;left: 0;
+    margin: -250px 0px 0px 0px;
+    font-size: 20px;
+    background: rgba(0,0,0,0.95);
+    box-shadow: 0px 0px 20px 13px rgba(0,0,0,0.75);
+    @include flexbox;
+    align-items: center;justify-content: center;
+    .shown {
+        position: relative;
+		&__input {
+            color: #ffffff;
+		}
+
+		&__label {
+            color: #ffffff;
+		}
+    }
+    &__close{
+        position: absolute;
+        right: 15px;top: 20px;
+        &:hover{
+            &::before{
+                color: #00ff37;
+            }
+        }
+        &::before{
+            @include anim(0.3s,0s);
+            content: "\d7";
+            font-size: 50px; 
+            color: #ffffff;
+            cursor: pointer;
+        }
+    }
+}
+// POP UP =====================================================
+
+// .dialog delete (material)
+.cdk-overlay-dark-backdrop{
+    background: rgba(0, 0, 0, 0.85) !important;
+}
+.mat-dialog-container{
+    padding: 20px 25px 40px 25px !important;
+}
+// ===.dialog delete (material)
+
+// tooltip
+.tooltip-log-out{
+    font-weight: 700; font-size: 18px !important; padding: 10px !important; color: #000000 !important; background-color: transparent;
+}
+.tooltip-pop-up{
+    font-size: 16px !important; padding: 10px !important; color: #ff0000 !important; background-color: transparent;
+}
+// tooltip
+
+//</Global classes>===========================================================================================================
+
+
+//<UI CLASS>===========================================================================================================
+@import './assets/cssStyle/ui.scss';
+@import './assets/cssStyle/forms.scss';
+//</UI CLASS>===========================================================================================================
+

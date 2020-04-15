@@ -1,0 +1,91 @@
+
+<div class="sign-form">
+  <div class="sign-form__form form-sign">
+    <form [formGroup]="signUpForm" (ngSubmit)="register()">
+      <div class="form-sign__first-name shown">
+        <input  type="text" 
+                class="shown__input"
+                [class.shown__input-error]="f.firstName.errors && f.firstName.touched ? true: false"
+                placeholder=" " 
+                formControlName="firstName">
+        <div class="shown__label"
+             [class.shown__label-error]="f.firstName.errors && f.firstName.touched ? true: false">
+            First Name
+        </div>
+        <div [@inOutAnimation] *ngIf="f.firstName.errors  && f.firstName.touched">
+          <div class="error error-length" *ngIf="f.firstName.errors.required">Required</div>
+          <div class="error error-length" *ngIf="f.firstName.errors.minlength">Min length = 3</div>
+          <div class="error error-pattern"  *ngIf="f.firstName.errors.pattern">Only letters</div>
+        </div>
+      </div>
+      <div class="form-sign__last-name shown">
+        <input  type="text" 
+                class="shown__input"
+                [class.shown__input-error]="f.lastName.errors && f.lastName.touched ? true: false"
+                placeholder=" " 
+                formControlName="lastName">
+
+        <div class="shown__label" 
+              [class.shown__label-error]="f.lastName.errors && f.lastName.touched ? true: false">
+              Last Name
+        </div>
+        <div [@inOutAnimation] *ngIf="f.lastName.errors  && f.lastName.touched">
+          <div class="error error-length" *ngIf="f.lastName.errors.required">Required</div>
+          <div class="error error-length" *ngIf="f.lastName.errors.minlength">Min length = 3</div>
+          <div class="error error-pattern"  *ngIf="f.lastName.errors.pattern">Only letters</div>
+        </div>
+      </div>
+      <div class="form-sign__email shown">
+        <input  type="email" 
+                class="shown__input"
+                [class.shown__input-error]="f.email.errors && f.email.touched ? true: false"
+                placeholder=" " 
+                formControlName="email">
+
+        <div class="shown__label"
+            [class.shown__label-error]="f.email.errors && f.email.touched ? true: false">
+          Email
+        </div>
+        <div [@inOutAnimation] *ngIf="f.email.errors  && f.email.touched">
+          <div class="error error-length" *ngIf="f.email.errors.required">Required</div>
+          <div class="error error-length" *ngIf="f.email.errors.email">Invalid email</div>
+        </div>
+      </div>
+      <div class="form-sign__login shown">
+        <input  type="text" 
+                class="shown__input" 
+                [class.shown__input-error]="f.login.errors && f.login.touched ? true: false"
+                placeholder=" " 
+                formControlName="login">
+        <div class="shown__label"
+          [class.shown__label-error]="f.login.errors && f.login.touched ? true: false">
+          Login
+        </div>
+        <div [@inOutAnimation] *ngIf="f.login.errors  && f.login.touched">
+          <div class="error error-length" *ngIf="f.login.errors.required">Required</div>
+          <div class="error error-length" *ngIf="f.login.errors.minlength">Min length = 3</div>
+          <div class="error error-pattern"  *ngIf="f.login.errors.pattern">Only latin</div>
+        </div>
+      </div>
+      <div class="form-sign__password shown">
+        <input  type="password"
+                class="shown__input"
+                [class.shown__input-error]="f.password.errors && f.password.touched ? true: false"
+                placeholder=" " 
+                formControlName="password">
+        <div class="shown__label" 
+            [class.shown__label-error]="f.password.errors && f.password.touched ? true: false">
+            Password
+        </div>
+        <div [@inOutAnimation] *ngIf="f.password.errors  && f.password.touched">
+          <div class="error error-length" *ngIf="f.password.errors.required">Required</div>
+          <div class="error error-length" *ngIf="f.password.errors.minlength">Min length = 3</div>
+          <div class="error error-pattern"  *ngIf="f.password.errors.pattern">'<>' - warning</div>
+        </div>
+      </div>
+      <div class="form-sign__button">
+        <button class="btn" [disabled]="signUpForm.invalid"><span>Send</span></button>
+      </div>
+    </form>
+  </div>
+</div>

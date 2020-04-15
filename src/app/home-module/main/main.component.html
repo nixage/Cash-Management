@@ -1,0 +1,75 @@
+<section class="section-income section">
+  <div class="income">
+    <div class="income__title section__title">Income</div>
+    <div class="income__row">
+      <div class="income__item item">
+        <div class="item__name">Income</div>
+        <div class="item__icon" bodyLock (click)="updateIncome()">
+            <img src="../../../assets/img/incomes/income.png" alt="">
+        </div>
+        <div class="item__amount">
+            {{userFinance?.income}}$
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-saving section">
+  <div class="saving">
+    <div class="saving__title section__title">Savings</div>
+    <div class="saving__row">
+      <div class="saving__collumn" *ngFor="let savings of userSavings">
+        <div class="saving__item item">
+          <div class="item__name">
+            {{savings.name}}
+          </div>
+          <div class="item__icon" bodyLock (click)="updateSavings(savings)">
+            <img src="../../../assets/img/saving/{{savings.img}}" alt="">
+          </div>
+          <div class="item__amount">
+            {{savings.amount}}$
+          </div>
+        </div>
+      </div>    
+      <div class="saving__collumn">
+        <div class="saving__item item">
+          <div class="item__name">ADD</div>
+          <div class="saving__add" (click)="addSavings()">
+              <div class="add-item" bodyLock>
+                <img src="../../../assets/img/item/plus.png" alt="">
+              </div>
+          </div>
+        </div>
+      </div>    
+    </div>
+  </div>
+</section>
+
+<section class="section-spends section">
+  <div class="spends">
+    <div class="spends__title section__title">Spends</div>
+
+    <div class="spends__row">
+      <div class="spends__collumn" *ngFor="let spends of userSpends">
+        <div class="spends__item item">
+          <div class="item__name">{{spends.name}}</div>
+          <div class="item__icon" bodyLock (click)="updateSpends(spends)">
+            <img src="../../../assets/img/spends/{{spends.img}}" alt="">
+          </div>
+          <div class="item__amount">{{spends.amount}}$</div>
+        </div>
+      </div>
+      <div class="spends__collumn">
+        <div class="spends__item item">
+          <div class="item__name">ADD</div>
+          <div class="spends__add" (click)="addSpends()">
+            <div class="add-item" bodyLock>
+              <img src="../../../assets/img/item/plus.png" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

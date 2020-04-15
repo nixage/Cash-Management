@@ -1,0 +1,45 @@
+
+<div class="sign-form">
+  <div class="sign-form__form form-sign">
+    <form [formGroup]="signInForm" (ngSubmit)="login()">
+      <div class="form-sign__login shown">
+        <input  type="text" 
+                [class.shown__input-error]="f.login.errors && f.login.touched ? true: false"
+                class="shown__input" 
+                placeholder=" " 
+                formControlName="login">
+        <div class="shown__label" 
+            [class.shown__label-error]="f.login.errors && f.login.touched ? true: false">
+          Login
+        </div>
+        <div [@inOutAnimation] *ngIf="f.login.errors  && f.login.touched">
+          <div class="error error-length" *ngIf="f.login.errors.required">Required</div>
+          <div class="error error-length" *ngIf="f.login.errors.minlength">Min length = 3</div>
+          <div class="error error-pattern"  *ngIf="f.login.errors.pattern">Only latin</div>
+        </div>
+      </div>
+      <div class="form-sign__password shown">
+        <input  type="password"
+                [class.shown__input-error]="f.password.errors && f.password.touched ? true: false"
+                class="shown__input" 
+                placeholder=" " 
+                formControlName="password">
+        <div class="shown__label" 
+            [class.shown__label-error]="f.password.errors && f.password.touched ? true: false">
+          Password
+        </div>
+        <div [@inOutAnimation] *ngIf="f.password.errors && f.password.touched">
+          <div class="error error-length" *ngIf="f.password.errors.required">Required</div>
+          <div class="error error-length" *ngIf="f.password.errors.minlength">Min length = 3</div>
+          <div class="error error-pattern"  *ngIf="f.password.errors.pattern">'<>' - warning</div>
+        </div>
+      </div>
+      <div [@inOutAnimation] *ngIf="submitted" class="form__message">
+        {{ msg }}
+      </div>
+      <div class="form-sign__button">
+        <button class="btn" [disabled]="signInForm.invalid"><span>Send</span></button>
+      </div>
+    </form>
+  </div>
+</div>
