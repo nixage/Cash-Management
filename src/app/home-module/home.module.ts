@@ -17,6 +17,11 @@ import { UpdateSpendsComponent } from './pop-up-update/update-spends/update-spen
 import { AddSpendsComponent } from './pop-up-add/add-spends/add-spends.component';
 import { AddSavingsComponent } from './pop-up-add/add-savings/add-savings.component';
 
+// SHARED COMPONENT
+import { CalcComponent } from '../sharedComponent/calc/calc.component';
+import { PopUpComponent } from '../sharedComponent/pop-up/pop-up.component';
+
+
 import { BodyLockDirective } from './directive/bodyLock/body-lock.directive';
 import { BodyUnLockDirective } from './directive/bodyUnLock/body-un-lock.directive';
 
@@ -51,6 +56,8 @@ import { UpdateIncomeComponent } from './pop-up-update/update-income/update-inco
 
     UpdateIncomeComponent,
     
+    CalcComponent,
+    PopUpComponent
   ],
 
   imports: [

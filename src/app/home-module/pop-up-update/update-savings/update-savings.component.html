@@ -1,31 +1,5 @@
-
-<div class="pop-up">
-
-  <div class="pop-up__close" (click)="closePopUp()" ></div>
-
-  <form class="pop-up-form" [formGroup]="formUpdate">
-    <div class="pop-up-form__title">
-      Write correct amount
-    </div>
-    <div class="pop-up-form__amount">
-      <div class="shown">
-        <div class="pop-up-form__delete" (click)="openDialog()"  matTooltipClass="tooltip-pop-up" matTooltip="Delete ?" matTooltipPosition="right"></div>
-        <input type="text" placeholder=" " class="shown__input" formControlName="amount">
-        <div class="shown__label">Write amount</div>
-      </div>
-      <div [@inOutAnimation] *ngIf="f.amount.errors && f.amount.touched">
-        <div class="error error-length" *ngIf="f.amount.errors?.required">Required</div>
-        <div class="error error-pattern" *ngIf="f.amount.errors?.pattern">Only number (0-9)</div>
-      </div>
-    </div>
-
-    <div class="pop-up-form__button">
-      <button class="btn btn-w" [disabled]="formUpdate.invalid || !formUpdate.dirty" (click)="updateSavings()" >
-        <span>Send</span>
-      </button>
-    </div>
-
-  </form>
-  
-</div>
+<app-pop-up [close]="flag">
+  <div class="pop-up-form__delete" (click)="openDialog()" >Delete this savings ?</div>
+  <app-calc (emitValue)="updateSavings($event)"></app-calc>
+</app-pop-up>
   

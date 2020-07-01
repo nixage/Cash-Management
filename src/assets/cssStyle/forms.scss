@@ -2,9 +2,9 @@
 //<BUTTONS>====================================================================================================
 .btn{
 	display: inline-block;
-    padding: 10px 43px;
-    background: transparent;
-    border: 2px solid #62d18f;
+	padding: 10px 43px;
+	background: transparent;
+	border: 2px solid #62d18f;
 	border-radius: 5px;
 	font-weight: 600;
 	position: relative;
@@ -49,6 +49,13 @@ input[type=text],input[type=email],input[type=tel],textarea{-webkit-appearance:n
 	padding: 0px 20px;
 	&.focus{}
 	&.err{}
+	&__calc{
+		background-color: #62d18f;
+		padding: 25px 2px;
+		text-align: right;
+		width: 100%;
+		font-size: 24px;
+	}
 }
 textarea.input{
 	resize:none;

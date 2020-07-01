@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { inOutAnimation } from 'src/app/animations/animations';
 import { UserService } from 'src/app/service/user/user.service';
 import { ToastrService } from 'ngx-toastr';
@@ -17,19 +16,18 @@ import { AppListenerService } from 'src/app/service/appListener/app-listener.ser
   animations: [inOutAnimation],
 })
 export class UpdateSavingsComponent implements OnInit {
-  formUpdate: FormGroup;
   saving: ISavings;
   savignId: string;
+  flag:boolean = false;
+
 
   constructor(
-    private router: Router,
     private activateRoute: ActivatedRoute,
     private userService: UserService,
     private toastrService: ToastrService,
     private dialog: MatDialog,
     private appListener: AppListenerService
   ) {
-    this.initForm();
   }
 
   ngOnInit(): void {
@@ -38,30 +36,13 @@ export class UpdateSavingsComponent implements OnInit {
       this.savignId = data['id'];
       this.userService.getUserSavingsById(id).subscribe((data: ISavings) => {
         this.saving = data;
-        this.formUpdate.get('amount').setValue(data.amount);
       });
     });
     this.appListener.wrapperLockSubject.next(true)
   }
 
-  get f() {
-    return this.formUpdate.controls;
-  }
-
-  initForm(): void {
-    this.formUpdate = new FormGroup({
-      amount: new FormControl('', {
-        validators: [Validators.required, Validators.pattern('[0-9]+')],
-        updateOn: 'change',
-      }),
-    });
-  }
-
-  updateSavings(): void | boolean {
-    if (this.formUpdate.invalid) {
-      return false;
-    }
-    const newAmount = +this.f.amount.value;
+  updateSavings(value: string): void | boolean {
+    const newAmount = +value;
     const sumOfUserSavings = this.userService.getUserAmountSavings();
     const resultOfNewSaving = newAmount - this.saving.amount;
     if (
@@ -79,13 +60,13 @@ export class UpdateSavingsComponent implements OnInit {
         this.updateUserBalance();
       },
       (err) => {
-        this.closeWithError(err);
+        this.showError(err);
       }
     );
   }
   updateUserBalance() {
     this.userService.updateUserBalance().subscribe((data) => {
-      this.closePopUp();
+      this.flag = true;
     });
   }
 
@@ -95,7 +76,7 @@ export class UpdateSavingsComponent implements OnInit {
         this.toastrService.success('Saving Delete', 'Success');
         this.updateUserBalance();
       },
-      (err) => this.closeWithError(err)
+      (err) => this.showError(err)
     );
   }
 
@@ -111,15 +92,7 @@ export class UpdateSavingsComponent implements OnInit {
     });
   }
 
-  closePopUp(): void {
-    this.router.navigate([{ outlets: { popUpUpdate: null } }], {
-      relativeTo: this.activateRoute.parent,
-    });
-    this.appListener.wrapperLockSubject.next(false)
-  }
-
-  closeWithError(err): void {
+  showError(err): void {
     this.toastrService.error(err.error.msg, 'Error');
-    this.closePopUp();
   }
 }
