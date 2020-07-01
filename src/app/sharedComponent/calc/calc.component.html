@@ -1,0 +1,48 @@
+<div class="calc">
+  <form [formGroup]="formUpdate" novalidate (ngSubmit)="updateValue()">
+    <div class="calc__input">
+      <input
+        type="text"
+        class="input__calc"
+        readonly
+        formControlName="income"
+      />
+    </div>
+    <div class="calc__area">
+      <div class="calc__row">
+        <div class="calc__column">
+          <div class="calc__buttons">
+            <button
+              class="calc__button"
+              *ngFor="let item of calcButtons"
+              (click)="addNum(item)"
+            >
+              {{ item }}
+            </button>
+            <i class="material-icons calc__button" (click)="removeLast()"
+              >&#xe14a;</i
+            >
+          </div>
+        </div>
+        <div class="calc__column">
+          <div
+            class="calc__operat"
+            *ngFor="let item of calcOperate"
+            (click)="addOperate(item)"
+          >
+            {{ item }}
+          </div>
+          <div class="calc__submit">
+            <button
+              type="submit"
+              [disabled]="formUpdate.invalid || !formUpdate.touched"
+              class="calc__button calc__submit"
+            >
+              <i class="material-icons">done</i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

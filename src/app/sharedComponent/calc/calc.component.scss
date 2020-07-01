@@ -1,0 +1,58 @@
+@import '../../../assets/cssStyle/mixin.scss';
+
+.calc {
+  padding: 30px 0px 10px 0px;
+  background-color: #fff;
+
+  &__input {
+  }
+
+  &__area {
+    padding: 5px;
+  }
+
+  &__row {
+    display: flex;
+  }
+
+  &__column {
+    flex-grow: 1;
+    &:last-child{
+      flex: 0 0 20%;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  &__button{
+    flex: 0 0 calc(33.333% - 5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    padding: 15px 5px;
+    font-size: 24px;
+    cursor: pointer;
+    height: 58px;
+    @include anim(0.3s,0s);
+    @media (min-width: 992px){
+      &:hover:not(:disabled){
+        box-shadow: 0px 0px 5px #000;
+      }
+    }
+  }
+  &__button:disabled{
+    cursor: auto;
+  }
+
+  &__operat {
+    @extend .calc__button;
+    font-size: 26px;
+  }
+  &__submit{
+    width: 100%;
+  }
+}

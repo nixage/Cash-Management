@@ -112,14 +112,12 @@
     }
     &__delete {
         position: absolute;
-        right: -30px;top: 50%;
-        transform: translateY(-50%);
-        &::before{
-            content: "\d7";
-            font-size: 30px; 
-            color: #ff0000;
-            cursor: pointer;
-        }
+        left: 30px;
+        top: 30px;
+        color: #ff0000;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
     }
 }
 // SIGN IN FORM =====================================================
@@ -192,6 +190,9 @@ mat-radio-button{
 }
 .tooltip-pop-up{
     font-size: 16px !important; padding: 10px !important; color: #ff0000 !important; background-color: transparent;
+}
+.tooltip-pop-up-close{
+    font-size: 16px !important; padding: 10px !important; color: #00ff37 !important; background-color: transparent;
 }
 // tooltip
 
