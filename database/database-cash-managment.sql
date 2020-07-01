@@ -63,5 +63,16 @@ insert into savings_options(name) value
 	('cash'),('bank');
 insert into spends_options(name) value
 	('girlfriend'),('car repair'),('animal'),('food'),('internet'),('tv');
+    
+DROP EVENT IF EXISTS clearData;
+delimiter |
+CREATE EVENT clearData
+	ON schedule every '1' month
+    DO
+begin
+	delete from user_spends;
+    update user_finance set expenses = 0, income = 0;
+end	|
+delimiter ;
 
 

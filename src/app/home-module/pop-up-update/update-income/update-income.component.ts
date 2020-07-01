@@ -9,70 +9,72 @@ import { inOutAnimation } from 'src/app/animations/animations';
 import { UserService } from 'src/app/service/user/user.service';
 
 import { ToastrService } from 'ngx-toastr';
-import { BodyLockDirective } from '../../directive/bodyLock/body-lock.directive';
+import { AppListenerService } from 'src/app/service/appListener/app-listener.service';
 
 @Component({
   selector: 'app-update-income',
   templateUrl: './update-income.component.html',
   styleUrls: ['./update-income.component.scss'],
   animations: [inOutAnimation],
-
 })
 export class UpdateIncomeComponent implements OnInit {
-
   formUpdate: FormGroup;
 
-  constructor(private router: Router, private activateRoute: ActivatedRoute, private userService: UserService, private toastrService: ToastrService,
-              private bodyLockDirective: BodyLockDirective) {
-    this.initForm()
-   }
+  constructor(
+    private router: Router,
+    private activateRoute: ActivatedRoute,
+    private userService: UserService,
+    private toastrService: ToastrService,
+    private appListener: AppListenerService
+  ) {
+    this.initForm();
+  }
 
   ngOnInit(): void {
-    this.userService.userFinanceSubject.forEach(val => {
-      this.formUpdate.get('income').setValue(val.income)
-    })
-    this.bodyLockDirective.bodyLock()
+    this.userService.userFinanceSubject.forEach((val) => {
+      this.formUpdate.get('income').setValue(val.income);
+    });
+    this.appListener.wrapperLockSubject.next(true)
   }
 
-  get f(){
-    return this.formUpdate.controls
+  get f() {
+    return this.formUpdate.controls;
   }
 
-  initForm():void{
+  initForm(): void {
     this.formUpdate = new FormGroup({
       income: new FormControl('', {
         validators: [Validators.required, Validators.pattern('[0-9]+')],
-        updateOn: 'change'
-      })
-    })
+        updateOn: 'change',
+      }),
+    });
   }
 
-  updateIncome(): void{
-    if (this.formUpdate.invalid){return}
+  updateIncome(): void {
+    if (this.formUpdate.invalid) {
+      return;
+    }
 
-    const income:number = +this.formUpdate.get('income').value;
-    this.userService.userFinaceData.income = income
+    const income: number = +this.formUpdate.get('income').value;
+    this.userService.userFinaceData.income = income;
 
-    this.userService.updateUserIncome().subscribe( data => {
-      this.toastrService.success('Income update', 'Success')
-      this.updateBalance()
-    }, err=> this.closeWithError(err))
-  }
-  
-  updateBalance(): void{
-    this.userService.updateUserBalance().subscribe(data => {
-      this.userService.userFinanceSubject.next(this.userService.userFinaceData)
-      this.toastrService.success('Balance Update', 'Success')
-      this.closePopUp()
-    }, err => this.closeWithError(err))
+    this.userService.updateUserIncome().subscribe(
+      (data) => {
+        this.toastrService.success('Income update', 'Success');
+        this.closePopUp();
+      },
+      (err) => this.closeWithError(err)
+    );
   }
 
-  closePopUp(): void{
-    this.router.navigate([{ outlets: { popUpUpdate: null } }], {relativeTo: this.activateRoute.parent});
+  closePopUp(): void {
+    this.router.navigate([{ outlets: { popUpUpdate: null } }], {
+      relativeTo: this.activateRoute.parent,
+    });
+    this.appListener.wrapperLockSubject.next(false)
   }
-  closeWithError(err): void{
+  closeWithError(err): void {
     this.toastrService.error(err.error.msg, 'Error');
-    this.closePopUp()
+    this.closePopUp();
   }
-
 }

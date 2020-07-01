@@ -7,8 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ISavings } from 'src/app/interface/finance/finance.interface';
 import { DeleteDialogComponent } from '../../delete-dialog/delete-dialog.component';
 
-import {MatDialog} from '@angular/material/dialog';
-import { BodyLockDirective } from '../../directive/bodyLock/body-lock.directive';
+import { MatDialog } from '@angular/material/dialog';
+import { AppListenerService } from 'src/app/service/appListener/app-listener.service';
 
 @Component({
   selector: 'app-update-savings',
@@ -17,57 +17,86 @@ import { BodyLockDirective } from '../../directive/bodyLock/body-lock.directive'
   animations: [inOutAnimation],
 })
 export class UpdateSavingsComponent implements OnInit {
-
   formUpdate: FormGroup;
   saving: ISavings;
   savignId: string;
 
-  constructor(private router: Router, private activateRoute: ActivatedRoute, private userService: UserService, private bodyLockDirective: BodyLockDirective,
-              private toastrService: ToastrService, private dialog: MatDialog) { 
-    this.initForm()
+  constructor(
+    private router: Router,
+    private activateRoute: ActivatedRoute,
+    private userService: UserService,
+    private toastrService: ToastrService,
+    private dialog: MatDialog,
+    private appListener: AppListenerService
+  ) {
+    this.initForm();
   }
 
   ngOnInit(): void {
-    this.activateRoute.queryParams.subscribe( data => {
+    this.activateRoute.queryParams.subscribe((data) => {
       const id = data['id'];
       this.savignId = data['id'];
-      this.userService.getUserSavingsById(id).subscribe( (data: ISavings) => {
+      this.userService.getUserSavingsById(id).subscribe((data: ISavings) => {
         this.saving = data;
-        this.formUpdate.get('amount').setValue(data.amount)
-      })
-    })
-    this.bodyLockDirective.bodyLock()
+        this.formUpdate.get('amount').setValue(data.amount);
+      });
+    });
+    this.appListener.wrapperLockSubject.next(true)
   }
 
-  get f(){
-    return this.formUpdate.controls
+  get f() {
+    return this.formUpdate.controls;
   }
 
-  initForm(): void{
+  initForm(): void {
     this.formUpdate = new FormGroup({
       amount: new FormControl('', {
         validators: [Validators.required, Validators.pattern('[0-9]+')],
-        updateOn: 'change'
-      })
-    })
+        updateOn: 'change',
+      }),
+    });
   }
 
-  updateSavings(): void | boolean{
-    if (this.formUpdate.invalid){ return false};
+  updateSavings(): void | boolean {
+    if (this.formUpdate.invalid) {
+      return false;
+    }
     const newAmount = +this.f.amount.value;
-    this.userService.updateUserSavings(this.saving.id, newAmount).subscribe( data => {
-      this.toastrService.success('Saving Update', 'Success')
-      this.closePopUp()
-    },err => {
-      this.closeWithError(err)
-    })
+    const sumOfUserSavings = this.userService.getUserAmountSavings();
+    const resultOfNewSaving = newAmount - this.saving.amount;
+    if (
+      sumOfUserSavings + resultOfNewSaving >
+      this.userService.userFinaceData.income
+    ) {
+      this.toastrService.error(
+        'Sum of savings is more than income for this mounth'
+      );
+      return;
+    }
+    this.userService.updateUserSavings(this.saving.id, newAmount).subscribe(
+      (data) => {
+        this.toastrService.success('Saving Update', 'Success');
+        this.updateUserBalance();
+      },
+      (err) => {
+        this.closeWithError(err);
+      }
+    );
+  }
+  updateUserBalance() {
+    this.userService.updateUserBalance().subscribe((data) => {
+      this.closePopUp();
+    });
   }
 
-  deleteSavings(): void{
-    this.userService.deleteUserSavings(this.saving.id).subscribe( data => {
-      this.toastrService.success('Saving Delete', 'Success')
-      this.closePopUp()
-    }, err => this.closeWithError(err))
+  deleteSavings(): void {
+    this.userService.deleteUserSavings(this.saving.id).subscribe(
+      (data) => {
+        this.toastrService.success('Saving Delete', 'Success');
+        this.updateUserBalance();
+      },
+      (err) => this.closeWithError(err)
+    );
   }
 
   openDialog(): void {
@@ -75,18 +104,22 @@ export class UpdateSavingsComponent implements OnInit {
       width: '250px',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result){this.deleteSavings()}
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleteSavings();
+      }
     });
   }
 
-  closePopUp(): void{
-    this.router.navigate([{ outlets: { popUpUpdate: null } }], {relativeTo: this.activateRoute.parent});
+  closePopUp(): void {
+    this.router.navigate([{ outlets: { popUpUpdate: null } }], {
+      relativeTo: this.activateRoute.parent,
+    });
+    this.appListener.wrapperLockSubject.next(false)
   }
 
-  closeWithError(err): void{
+  closeWithError(err): void {
     this.toastrService.error(err.error.msg, 'Error');
-    this.closePopUp()
+    this.closePopUp();
   }
-
 }

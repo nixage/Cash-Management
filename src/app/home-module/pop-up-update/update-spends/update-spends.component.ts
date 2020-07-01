@@ -6,12 +6,9 @@ import { UserService } from 'src/app/service/user/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { ISpends } from 'src/app/interface/finance/finance.interface';
 
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../../delete-dialog/delete-dialog.component';
-
-import { BodyLockDirective } from '../../directive/bodyLock/body-lock.directive';
-
-
+import { AppListenerService } from 'src/app/service/appListener/app-listener.service';
 
 @Component({
   selector: 'app-update-spends',
@@ -20,102 +17,131 @@ import { BodyLockDirective } from '../../directive/bodyLock/body-lock.directive'
   animations: [inOutAnimation],
 })
 export class UpdateSpendsComponent implements OnInit {
-
   formUpdate: FormGroup;
   spends: ISpends;
 
-   constructor(private router: Router, private activateRoute: ActivatedRoute, private userService: UserService, private toastrService: ToastrService,
-               private dialog: MatDialog, private bodyLockDirective: BodyLockDirective) { 
-    this.initForm()
+  constructor(
+    private router: Router,
+    private activateRoute: ActivatedRoute,
+    private userService: UserService,
+    private toastrService: ToastrService,
+    private dialog: MatDialog,
+    private appListener: AppListenerService
+  ) {
+    this.initForm();
   }
 
   ngOnInit(): void {
-    this.activateRoute.queryParams.subscribe( data => {
-    const id = data['id']
-      this.userService.getUserSpendsById(id).subscribe( (data: ISpends) => {
+    this.activateRoute.queryParams.subscribe((data) => {
+      const id = data['id'];
+      this.userService.getUserSpendsById(id).subscribe((data: ISpends) => {
         this.spends = data;
-        this.formUpdate.get('amount').setValue(data.amount)
-      })
-    })
-    this.bodyLockDirective.bodyLock()
+        this.formUpdate.get('amount').setValue(data.amount);
+      });
+    });
+    this.appListener.wrapperLockSubject.next(true)
   }
 
-  get f(){
-    return this.formUpdate.controls
+  get f() {
+    return this.formUpdate.controls;
   }
 
-  initForm(): void{
+  initForm(): void {
     this.formUpdate = new FormGroup({
       amount: new FormControl('', {
         validators: [Validators.required, Validators.pattern('[0-9]+')],
-        updateOn: 'change'
-      })
-    })
+        updateOn: 'change',
+      }),
+    });
   }
 
-  updateSpends(): void | boolean{
-    if (this.formUpdate.invalid){ return false};
+  updateSpends(): void | boolean {
+    if (this.formUpdate.invalid) {
+      return false;
+    }
     const newAmount = +this.f.amount.value;
-    const oldAmount = +this.spends.amount
-    const res = (newAmount - oldAmount);
+    const oldAmount = +this.spends.amount;
+    const res = newAmount - oldAmount;
 
     /* UPDATE USER SPENDS IN DATABASE */
-    this.userService.updateUserSpends(this.spends.id, newAmount).subscribe( data => {
-      /* UPDATE USER SAVINGS IN DATABASE*/
-      const userSavingId = this.userService.userSpendArray.find(val => val.savingId === this.spends.savingId);
-      const userSaving = this.userService.userSavingsArray.find(val => val.id === userSavingId.savingId)
-      const newUserSavingAmount = userSaving.amount - (+res);
-      this.toastrService.success('Spend Update', 'Success')
-      this.updateUserSavings(newUserSavingAmount)
-    },err => this.closeWithError(err))
-
+    this.userService.updateUserSpends(this.spends.id, newAmount).subscribe(
+      (data) => {
+        /* UPDATE USER SAVINGS IN DATABASE*/
+        const userSavingId = this.userService.userSpendArray.find(
+          (val) => val.savingId === this.spends.savingId
+        );
+        const userSaving = this.userService.userSavingsArray.find(
+          (val) => val.id === userSavingId.savingId
+        );
+        const newUserSavingAmount = userSaving.amount - res;
+        debugger;
+        this.toastrService.success('Spend Update', 'Success');
+        this.updateUserSavings(newUserSavingAmount);
+      },
+      (err) => this.closeWithError(err)
+    );
   }
 
-  deleteSpends(): void{
+  deleteSpends(): void {
     /* DELETE USER SPENDS IN DATABASE */
-    this.userService.deleteUserSpends(this.spends.id).subscribe( data => {
-      const userSaving = this.userService.userSavingsArray.find( val => val.id === this.spends.savingId);      
-      const newUserSavingAmount = userSaving.amount + this.spends.amount;
-      this.toastrService.success('Spend Delete', 'Success')
-      this.updateUserSavings(newUserSavingAmount)
-    }, err=>this.closeWithError(err))
+    this.userService.deleteUserSpends(this.spends.id).subscribe(
+      (data) => {
+        const userSaving = this.userService.userSavingsArray.find(
+          (val) => val.id === this.spends.savingId
+        );
+        const newUserSavingAmount = userSaving.amount + this.spends.amount;
+        this.toastrService.success('Spend Delete', 'Success');
+        this.updateUserSavings(newUserSavingAmount);
+      },
+      (err) => this.closeWithError(err)
+    );
   }
 
-  updateUserSavings(newUserSavingAmount: number):void{
-     /* UPDATE USER SAVING IN DATABASE */
-    this.userService.updateUserSavings(this.spends.savingId, newUserSavingAmount).subscribe(data => {
-      this.toastrService.success('Saving Update', 'Success')
-      this.updateUserFinance()
-    }, err=> this.closeWithError(err))
+  updateUserSavings(newUserSavingAmount: number): void {
+    /* UPDATE USER SAVING IN DATABASE */
+    this.userService
+      .updateUserSavings(this.spends.savingId, newUserSavingAmount)
+      .subscribe(
+        (data) => {
+          this.toastrService.success('Saving Update', 'Success');
+          this.updateUserFinance();
+        },
+        (err) => this.closeWithError(err)
+      );
   }
 
-  updateUserFinance():void{
+  updateUserFinance(): void {
     /* UPDATE USER FINANCE IN DATABASE */
-    this.userService.updateUserFinance().subscribe(data=>{
-      this.toastrService.success('Balance and Expenses update', 'Success');
-      this.closePopUp()
-    }, err=> this.closeWithError(err))
+    this.userService.updateUserFinance().subscribe(
+      (data) => {
+        this.toastrService.success('Balance and Expenses update', 'Success');
+        this.closePopUp();
+      },
+      (err) => this.closeWithError(err)
+    );
   }
-
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       width: '250px',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result){this.deleteSpends()}
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleteSpends();
+      }
     });
   }
 
-  closePopUp(): void{
-    this.router.navigate([{ outlets: { popUpUpdate: null } }], {relativeTo: this.activateRoute.parent});
+  closePopUp(): void {
+    this.router.navigate([{ outlets: { popUpUpdate: null } }], {
+      relativeTo: this.activateRoute.parent,
+    });
+    this.appListener.wrapperLockSubject.next(false)
   }
 
-  closeWithError(err): void{
+  closeWithError(err): void {
     this.toastrService.error(err.error.msg, 'Error');
-    this.closePopUp()
+    this.closePopUp();
   }
-
-
 }

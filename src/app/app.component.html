@@ -1,7 +1,7 @@
 
-<div class="wrapper">
+<div class="wrapper" [ngClass]="{'lock': wrapperLock === true }">
 
-<router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 
 </div>
 <router-outlet name="popUpAdd"></router-outlet>

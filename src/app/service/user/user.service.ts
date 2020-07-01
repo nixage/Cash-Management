@@ -5,7 +5,6 @@ import { IFinance, ISavings, ISpends, ISavingsOptions, ISpendsOptions } from 'sr
 import { map } from 'rxjs/operators';
 import { AuthService } from '../auth-service/auth.service';
 import { IUser } from 'src/app/interface/user/user.interface';
-import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -23,16 +22,16 @@ export class UserService {
   baseFinanceUrl = 'http://localhost:3001/finance/';
 
 
-  constructor(private http: HttpClient, private authService: AuthService) { 
-  }
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
 // FINANCE USER METHOD =====================================================
   getUserFinance():Observable<IFinance>{
     const user = JSON.parse(localStorage.getItem('current-user'));
     return this.http.get<IFinance>(this.baseHomeUrl + user.id + '/finance').pipe(
       map( (data: IFinance) => {
-        this.userFinanceSubject.next(data);
+        this.userFinaceData = null
         this.userFinaceData = data
+        this.userFinanceSubject.next(this.userFinaceData);
         return data
       })
     )
@@ -45,23 +44,28 @@ export class UserService {
   }
   updateUserBalance(){
     const user = this.getCurrentUser();
-    let expenses: number = this.getUserAmountExpenses();
-    let balance:number = this.userFinaceData.income - expenses;
+    let sumOfSavings: number = this.getUserAmountSavings();
+    const balance:number = sumOfSavings
     this.userFinaceData.balance = balance;
     return this.http.post(this.baseHomeUrl + user.id + '/update/balance', {balance})
   }
   updateUserExpenses(){
     const user = this.getCurrentUser();
-    let expenses:number = this.getUserAmountExpenses();
+    let expenses:number = this.getUserAmountSpends();
     this.userFinaceData.expenses = expenses
     return this.http.post(this.baseHomeUrl + user.id + '/update/expenses', {expenses})
   }
-  getUserAmountExpenses(){
-    let expenses:number = 0;
-    this.userSpendArray.forEach( val => {
-      expenses += val.amount;
-    })
-    return expenses
+  getUserAmountSavings(){
+    return this.userSavingsArray.reduce( (acc, cur) => {
+      acc += cur.amount
+      return acc
+    },0)
+  }
+  getUserAmountSpends(){
+    return this.userSpendArray.reduce( (acc, cur) => {
+      acc += cur.amount
+      return acc
+    },0)
   }
   updateUserIncome(){
     const user = this.getCurrentUser();
@@ -77,6 +81,7 @@ export class UserService {
     const user = this.getCurrentUser()
     return this.http.get<ISavings[]>(this.baseHomeUrl + user.id + '/savings').pipe(
       map( (data: Array<ISavings>) => {
+        this.userSavingsArray = []
         data.forEach((val:ISavings) => {
           this.userSavingsArray.push(val)
         });
@@ -108,7 +113,7 @@ export class UserService {
   getSavings(): Observable<Array<ISavingsOptions>>{
     return this.http.get<Array<ISavingsOptions>>(this.baseFinanceUrl + 'savings')
   }
-    // =====
+  // =====
   updateUserSavings(id:number, amount:number): Observable<any>{
     const user = this.getCurrentUser()
     return this.http.post<ISavings>(this.baseHomeUrl + user.id + '/update/savings', {id, amount}).pipe(
@@ -144,6 +149,7 @@ export class UserService {
     const user = this.getCurrentUser()
     return this.http.get<ISpends[]>(this.baseHomeUrl + user.id + '/spends').pipe(
       map( (data:Array<ISpends>) => {
+        this.userSpendArray = [];
         data.forEach((val:ISpends) => {
           this.userSpendArray.push(val)
         });
@@ -200,7 +206,8 @@ export class UserService {
     )
   }
 
-// SAVINGS USER METHOD =====================================================
+// SPENDS USER METHOD =====================================================
+
   getCurrentUser(): IUser{
     let user = this.authService.currentUser;
     if(!user){

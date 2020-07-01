@@ -10,11 +10,11 @@ export class HomeComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.getUserFinance()
+    this.getUserData()
 
   }
 
-  getUserFinance(){
+  getUserData(){
     this.userService.getUserFinance().toPromise();
     this.userService.getUserSavings().toPromise();
     this.userService.getUserSpends().toPromise();
