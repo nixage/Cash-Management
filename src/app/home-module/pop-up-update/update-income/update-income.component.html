@@ -1,7 +1,7 @@
 
 <div class="pop-up">
 
-  <div class="pop-up__close" (click)="closePopUp()" bodyUnlock></div>
+  <div class="pop-up__close" (click)="closePopUp()" ></div>
 
   <form class="pop-up-form" [formGroup]="formUpdate">
     <div class="pop-up-form__title">
@@ -19,7 +19,7 @@
     </div>
 
     <div class="pop-up-form__button">
-      <button class="btn btn-w" [disabled]="formUpdate.invalid || !formUpdate.dirty" (click)="updateIncome()" bodyUnlock>
+      <button class="btn btn-w" [disabled]="formUpdate.invalid || !formUpdate.dirty" (click)="updateIncome()" >
         <span>Send</span>
       </button>
     </div>

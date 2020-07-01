@@ -20,7 +20,6 @@ homeRouter.get("/user/:id/finance", isAuthenticated, function(req, res){
 homeRouter.post("/user/:id/update/balance", isAuthenticated, function(req, res){
     const id = req.params.id;
     const {balance} = req.body
-    console.log(balance)
     const selectFinance = `update user_finance SET balance = ? where user_id = ?`;
     mysqlConnection.query(selectFinance, [balance,id], (err, result) =>{
         if (err){
@@ -32,7 +31,6 @@ homeRouter.post("/user/:id/update/balance", isAuthenticated, function(req, res){
 homeRouter.post("/user/:id/update/expenses", isAuthenticated, function(req, res){
     const id = req.params.id;
     const {expenses} = req.body
-    console.log(expenses)
     const selectFinance = `update user_finance SET expenses = ? where user_id = ?`;
     mysqlConnection.query(selectFinance, [expenses,id], (err, result) =>{
         if (err){
@@ -44,7 +42,6 @@ homeRouter.post("/user/:id/update/expenses", isAuthenticated, function(req, res)
 homeRouter.post("/user/:id/update/income", isAuthenticated, function(req, res){
     const id = req.params.id;
     const {income} = req.body
-    console.log(income)
     const selectFinance = `update user_finance SET income = ? where user_id = ?`;
     mysqlConnection.query(selectFinance, [income,id], (err, result) =>{
         if (err){

@@ -1,7 +1,7 @@
 
 <div class="pop-up">
 
-  <div class="pop-up__close" (click)="closePopUp()" bodyUnlock></div>
+  <div class="pop-up__close" (click)="closePopUp()" ></div>
 
   <div class="pop-up-form">
     <form [formGroup]="formAdd" novalidate>
@@ -44,7 +44,7 @@
       </div>
 
       <div class="pop-up-form__button">
-        <button class="btn btn-w" [disabled]="formAdd.invalid" (click)="addSpends()" bodyUnlock><span>send</span></button>
+        <button class="btn btn-w" [disabled]="formAdd.invalid" (click)="addSpends()" ><span>send</span></button>
       </div>
 
     </form>

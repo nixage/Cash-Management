@@ -4,7 +4,7 @@
     <div class="income__row">
       <div class="income__item item">
         <div class="item__name">Income</div>
-        <div class="item__icon" bodyLock (click)="updateIncome()">
+        <div class="item__icon"  (click)="updateIncome()">
             <img src="../../../assets/img/incomes/income.png" alt="">
         </div>
         <div class="item__amount">
@@ -24,7 +24,7 @@
           <div class="item__name">
             {{savings.name}}
           </div>
-          <div class="item__icon" bodyLock (click)="updateSavings(savings)">
+          <div class="item__icon" (click)="updateSavings(savings)">
             <img src="../../../assets/img/saving/{{savings.img}}" alt="">
           </div>
           <div class="item__amount">
@@ -36,7 +36,7 @@
         <div class="saving__item item">
           <div class="item__name">ADD</div>
           <div class="saving__add" (click)="addSavings()">
-              <div class="add-item" bodyLock>
+              <div class="add-item">
                 <img src="../../../assets/img/item/plus.png" alt="">
               </div>
           </div>
@@ -54,7 +54,7 @@
       <div class="spends__collumn" *ngFor="let spends of userSpends">
         <div class="spends__item item">
           <div class="item__name">{{spends.name}}</div>
-          <div class="item__icon" bodyLock (click)="updateSpends(spends)">
+          <div class="item__icon" (click)="updateSpends(spends)">
             <img src="../../../assets/img/spends/{{spends.img}}" alt="">
           </div>
           <div class="item__amount">{{spends.amount}}$</div>
@@ -64,7 +64,7 @@
         <div class="spends__item item">
           <div class="item__name">ADD</div>
           <div class="spends__add" (click)="addSpends()">
-            <div class="add-item" bodyLock>
+            <div class="add-item" >
               <img src="../../../assets/img/item/plus.png" alt="">
             </div>
           </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/service/user/user.service';
-import { IFinance, ISpends } from 'src/app/interface/finance/finance.interface';
+import { IFinance, ISpends, ISavings } from 'src/app/interface/finance/finance.interface';
 import { Router } from '@angular/router';
 import { IUser } from 'src/app/interface/user/user.interface';
 import { AuthService } from 'src/app/service/auth-service/auth.service';
@@ -28,20 +28,28 @@ export class HeaderComponent implements OnInit {
       this.userFinance = data;
       this.userExpenses = data.expenses;
       this.userBalance = data.balance;
-      this.updateUserBalance()
     })
     this.userService.userSpendSubject.subscribe( data => {
       this.updateUserExpenses(data)
-      this.updateUserBalance()
+    })
+    this.userService.userSavingsSubject.subscribe( data => {
+      this.updateUserBalance(data)
     })
   }
 
   updateUserExpenses(spends: ISpends[]){
     this.userExpenses = 0;
-    spends.forEach(val=>this.userExpenses += val.amount)
+    this.userExpenses = spends.reduce( (acc, cur) => {
+      acc += cur.amount
+      return acc
+    },0)
   }
-  updateUserBalance(){
-    this.userBalance = this.userFinance.income - this.userExpenses
+  updateUserBalance(data: ISavings[]){
+    this.userBalance = 0;
+    this.userBalance = data.reduce( (acc, cur) => {
+      acc += cur.amount
+      return acc
+    },0)
   }
 
   logOut(){
