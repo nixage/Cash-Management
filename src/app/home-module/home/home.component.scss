@@ -1,31 +1,84 @@
-@import '../../../assets/cssStyle/var.scss';
+@import "../../../assets/cssStyle/var.scss";
+@import "../../../assets/cssStyle/mixin.scss";
 
-.header{
-
-    margin: 0px 0px 50px 0px;
-    &__wrap{
-        padding: 50px 0px 0px 0px;
-        @media (max-width:$md4+px){
-            padding: 20px 0px 0px 0px;
-        }
+.header {
+  margin: 0px 0px 50px 0px;
+  &__wrap {
+    padding: 50px 0px 0px 0px;
+    @media (max-width: $md4+px) {
+      padding: 20px 0px 0px 0px;
     }
-
-
-
-
+  }
 }
 
-.main{
-    margin: 0px 0px 50px 0px;
-    &__wrap{
-        box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.38);
-        padding: 40px 20px;
-    }
+.main {
+  margin: 0px 0px 50px 0px;
+  &__wrap {
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.38);
+    padding: 40px 20px;
+  }
 }
 
-.footer{
-    &__wrap{
-        padding: 10px;
-        box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.38);
+.footer {
+  &__wrap {
+    padding: 10px;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.38);
+  }
+}
+
+.side-bar {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000b8;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  visibility: hidden;
+  @include anim(0.3s,0s);
+  &.open{
+    z-index: 1000;
+    opacity: 1;
+    visibility: visible;
+  }
+  &__body {
+    position: absolute;
+    top: 50%;
+    transform: translate(0,-50%);
+    width: 21%;
+    height: calc(100vh - 20%);
+    background-color: #fff;
+    padding: 40px 20px;
+  }
+
+  &__menu {
+  }
+}
+.menu-side-bar {
+  &__list {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+  }
+
+  &__item {
+    margin: 0px 0px 10px 0px;
+    padding: 0px 0px 10px 0px;
+    border-bottom: 1px solid #62d18f;
+    display: flex;
+    align-items: center;
+    span{
+      margin: 0px 10px 0px 0px;
     }
+  }
+  &__link{
+    font-size: 28px;
+    color: #616161;
+    @include anim(0.3s,0s);
+    @media (min-width: 992px){
+      &:hover{
+        color: #000;
+      }
+    }
+  }
 }
