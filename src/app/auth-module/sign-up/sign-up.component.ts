@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { inOutAnimation } from '../../animations/animations';
-import { AuthService } from 'src/app/service/auth-service/auth.service';
+import { AuthService } from '../service/auth-service/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 

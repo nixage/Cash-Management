@@ -1,8 +1,11 @@
 
-<div class="wrapper" [ngClass]="{'lock': wrapperLock === true }">
-
+<div class="wrapper" [ngClass]="{'lock': (wrapperLock | async) }">
   <router-outlet></router-outlet>
-
 </div>
+<ng-container *ngIf="loading" >
+  <div class="loading">
+    <mat-spinner diameter="70"></mat-spinner>
+  </div>
+</ng-container>
 <router-outlet name="popUpAdd"></router-outlet>
 <router-outlet name="popUpUpdate"></router-outlet>

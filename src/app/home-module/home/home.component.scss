@@ -32,14 +32,17 @@
   height: 100vh;
   background-color: #000000b8;
   top: 0;
-  left: 0;
+  left: -120%;
   opacity: 0;
   visibility: hidden;
-  @include anim(0.3s,0s);
+  pointer-events: none;
+  @include anim(0.5s,0s);
   &.open{
+    left: 0;
     z-index: 1000;
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
   }
   &__body {
     position: absolute;
@@ -52,6 +55,25 @@
   }
 
   &__menu {
+  }
+  &__close{
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    &:before{
+      transition: all 0.3s ease 0s;
+      content: "×";
+      font-size: 50px;
+      color: #000;
+      cursor: pointer;
+    }
+    @media (min-width: 992px){
+      &:hover{
+        &:before{
+          color: rgb(255, 0, 0);
+        }
+      }
+    }
   }
 }
 .menu-side-bar {

@@ -1,13 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AppListenerService } from 'src/app/service/appListener/app-listener.service';
+import { Store } from '@ngrx/store';
+import { wrapperLockActions } from 'src/app/appState/wrapperLock/wrapperLock.actions';
 
 @Component({
   selector: 'app-pop-up',
   templateUrl: './pop-up.component.html',
   styleUrls: ['./pop-up.component.scss']
 })
-export class PopUpComponent implements OnInit {
+export class PopUpComponent {
 
   @Input()
     set close(flag: boolean){
@@ -17,17 +18,14 @@ export class PopUpComponent implements OnInit {
   constructor(
     private router: Router,
     private activateRoute: ActivatedRoute,
-    private appListener: AppListenerService
+    private store: Store
   ) { }
-
-  ngOnInit(): void {
-  }
 
   closePopUp(): void {
     this.router.navigate([{ outlets: { popUpUpdate: null } }], {
       relativeTo: this.activateRoute.parent,
     });
-    this.appListener.wrapperLockSubject.next(false)
+    this.store.dispatch( new wrapperLockActions({flag:false}))
   }
 
 }

@@ -5,10 +5,10 @@
       <div class="income__item item">
         <div class="item__name">Income</div>
         <div class="item__icon"  (click)="updateIncome()">
-            <img src="../../../assets/img/incomes/income.png" alt="">
+            <img src="assets/img/incomes/income.png" alt="">
         </div>
         <div class="item__amount">
-            {{userFinance?.income}}$
+            {{userIncome}}$
         </div>
       </div>
     </div>
@@ -25,7 +25,8 @@
             {{savings.name}}
           </div>
           <div class="item__icon" (click)="updateSavings(savings)">
-            <img src="../../../assets/img/saving/{{savings.img}}" alt="">
+            <img *ngIf="savings.img; else imgdef" src="assets/img/saving/{{savings.img}}" alt="">
+            <ng-template #imgdef></ng-template>
           </div>
           <div class="item__amount">
             {{savings.amount}}$
@@ -37,7 +38,7 @@
           <div class="item__name">ADD</div>
           <div class="saving__add" (click)="addSavings()">
               <div class="add-item">
-                <img src="../../../assets/img/item/plus.png" alt="">
+                <img src="assets/img/item/plus.png" alt="">
               </div>
           </div>
         </div>
@@ -55,7 +56,8 @@
         <div class="spends__item item">
           <div class="item__name">{{spends.name}}</div>
           <div class="item__icon" (click)="updateSpends(spends)">
-            <img src="../../../assets/img/spends/{{spends.img}}" alt="">
+            <img *ngIf="spends.img; else imgdef" src="assets/img/spends/{{spends.img}}" alt="">
+            <ng-template #imgdef></ng-template>
           </div>
           <div class="item__amount">{{spends.amount}}$</div>
         </div>

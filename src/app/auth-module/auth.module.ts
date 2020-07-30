@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { BrowserAnimationsModule  } from '@angular/platform-browser/animations';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 
 import { AuthRoutingModule } from './auth-routing.module';
@@ -15,7 +13,6 @@ import { AuthHomeComponent } from './auth-home/auth-home.component';
   declarations: [SignInComponent, SignUpComponent, AuthHomeComponent],
   imports: [
     CommonModule,
-    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     AuthRoutingModule

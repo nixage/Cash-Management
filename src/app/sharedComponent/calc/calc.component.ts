@@ -62,8 +62,8 @@ export class CalcComponent implements OnInit {
 
   updateValue(): void{
     const value:string = eval(this.formUpdate.get('income').value).toString()
-    console.log(typeof value)
     this.emitValue.emit(value ? value: '0')
+    this.formUpdate.reset()
   }
 
 }

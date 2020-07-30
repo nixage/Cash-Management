@@ -1,11 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
+// ANIMATION
 import { inOutAnimation } from 'src/app/animations/animations';
 
-import { UserService } from 'src/app/service/user/user.service';
-
+// SERVICES
 import { ToastrService } from 'ngx-toastr';
-import { AppListenerService } from 'src/app/service/appListener/app-listener.service';
+
+// NGRX
+import { Store, ActionsSubject } from '@ngrx/store';
+import { UserFinanceIncomeUpdateActions, userFinanceActionsType } from '../../state/userFinance/userFinance.actions'
+import { ofType } from '@ngrx/effects';
+import { wrapperLockActions } from 'src/app/appState/wrapperLock/wrapperLock.actions';
+
+// RXJS
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-update-income',
@@ -13,31 +21,32 @@ import { AppListenerService } from 'src/app/service/appListener/app-listener.ser
   styleUrls: ['./update-income.component.scss'],
   animations: [inOutAnimation],
 })
-export class UpdateIncomeComponent implements OnInit {
+export class UpdateIncomeComponent implements OnInit,OnDestroy {
   flag:boolean = false;
 
+  updateUserIncomeSub = new Subscription()
+
   constructor(
-    private userService: UserService,
     private toastrService: ToastrService,
-    private appListener: AppListenerService
+    private store: Store,
+    private actionsub: ActionsSubject
   ) {
   }
-
+  ngOnDestroy(): void {
+    this.updateUserIncomeSub.unsubscribe()
+  }
   ngOnInit(): void {
-    this.appListener.wrapperLockSubject.next(true)
+    this.store.dispatch( new wrapperLockActions({flag:true}))
   }
 
   updateIncome(value: string): void {
     const income: number = +value
-    this.userService.userFinaceData.income = income;
-
-    this.userService.updateUserIncome().subscribe(
-      (data) => {
-        this.toastrService.success('Income update', 'Success');
-        this.flag = true;
-      },
-      (err) => this.showError(err)
-    );
+    this.store.dispatch(new UserFinanceIncomeUpdateActions({amount:income}))
+    this.updateUserIncomeSub = this.actionsub.pipe(
+      ofType(userFinanceActionsType.updateUserIncomeSuccess)
+    ).subscribe( () => {
+      this.flag = true;
+    })
   }
   showError(err): void {
     this.toastrService.error(err.error.msg, 'Error');
