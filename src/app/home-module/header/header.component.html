@@ -1,55 +1,68 @@
 <div class="header__row">
   <div class="header__menu">
-      <div class="header__icon icon-header">
-        <div class="icon-header__item"></div>
-				<div class="icon-header__item"></div>
-				<div class="icon-header__item"></div>
-				<div class="icon-header__item"></div>
-      </div>
+    <div class="header__icon icon-header" (click)="openSideBar()">
+      <div class="icon-header__item"></div>
+      <div class="icon-header__item"></div>
+      <div class="icon-header__item"></div>
+      <div class="icon-header__item"></div>
+    </div>
   </div>
 
   <div class="header__user-info user-info">
     <div class="user-info__row">
       <div class="user-info__collumn">
-          <div class="user-item">
-              
-              <div class="user-item__body">
-                  <div class="user-item__image"><img src="../../../assets/img/header/network.png" alt=""></div>
-                  <div class="user-item__text">USER: {{user?.firstName}} {{user?.lastName}}</div>
-              </div>
+        <div class="user-item">
+          <div class="user-item__body">
+            <div class="user-item__image">
+              <img src="../../../assets/img/header/network.png" alt="" />
+            </div>
+            <div class="user-item__text">
+              USER: {{ user?.firstName }} {{ user?.lastName }}
+            </div>
           </div>
+        </div>
       </div>
       <div class="user-info__collumn">
-          <div class="user-item">
-      
-              <div class="user-item__body">
-                  <div class="user-item__image"><img src="../../../assets/img/header/wallet.png" alt=""></div>
-                  <div class="user-item__text">BALANCE: {{userBalance}}$</div>
-              </div>
-          </div>        
+        <div class="user-item">
+          <div class="user-item__body">
+            <div class="user-item__image">
+              <img src="../../../assets/img/header/wallet.png" alt="" />
+            </div>
+            <div class="user-item__text">BALANCE: {{ userBalance }}$</div>
+          </div>
+        </div>
       </div>
       <div class="user-info__collumn">
-          <div class="user-item">
-      
-              <div class="user-item__body">
-                  <div class="user-item__image"><img src="../../../assets/img/header/money.png" alt=""></div>
-                  <div class="user-item__text">EXPENSES: {{userExpenses}}$</div>
-              </div>
+        <div class="user-item">
+          <div class="user-item__body">
+            <div class="user-item__image">
+              <img src="../../../assets/img/header/money.png" alt="" />
+            </div>
+            <div class="user-item__text">EXPENSES: {{ userExpenses }}$</div>
           </div>
+        </div>
       </div>
       <div class="user-info__collumn">
-          <div class="user-item">
-      
-              <div class="user-item__body">
-                  <div class="user-item__image"><img src="../../../assets/img/header/calendar.png" alt=""></div>
-                  <div class="user-item__text">DATE: {{date | date: 'dd.M.yyyy'}}</div>
-              </div>
+        <div class="user-item">
+          <div class="user-item__body">
+            <div class="user-item__image">
+              <img src="../../../assets/img/header/calendar.png" alt="" />
+            </div>
+            <div class="user-item__text">
+              DATE: {{ date | date: "dd.M.yyyy" }}
+            </div>
           </div>
-  
+        </div>
       </div>
     </div>
-    <div class="user-info__log-out" (click)="logOut()" matTooltipClass="tooltip-log-out" matTooltip="Log Out" matTooltipPosition="right">
-      <img src="../../../assets/img/header/logout.png" alt="">
+    <div
+      class="user-info__log-out"
+      (click)="logOut()"
+      matTooltipClass="tooltip-log-out"
+      matTooltip="Log Out"
+      matTooltipPosition="right"
+    >
+      <img src="../../../assets/img/header/logout.png" alt="" />
     </div>
   </div>
 </div>

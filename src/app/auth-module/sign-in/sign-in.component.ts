@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms'
 
 import { inOutAnimation } from '../../animations/animations';
 
-import { AuthService } from '../../service/auth-service/auth.service';
+import { AuthService } from '../service/auth-service/auth.service';
 
 import { Router } from '@angular/router';
 
@@ -47,7 +47,6 @@ export class SignInComponent implements OnInit {
       next: data =>{
         this.signInForm.reset();
         this.route.navigateByUrl('/home');
-        console.log(data)
       },
       error: err =>{
         if (err.status === 500){

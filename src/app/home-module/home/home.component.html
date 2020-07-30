@@ -23,21 +23,22 @@
 </footer>
 
 
-<div class="side-bar">
+<div class="side-bar" [ngClass]="{'open': (sideBarOpen | async)}">
   <div class="side-bar__body">
+    <div class="side-bar__close" (click)="closeSideBar()"></div>
     <div class="side-bar__menu menu-side-bar">
       <ul class="menu-side-bar__list">
-        <div href="#" class="menu-side-bar__item">
+        <div class="menu-side-bar__item">
           <span class="material-icons">settings</span>
-          <a href="#" class="menu-side-bar__link">settings</a>
+          <a routerLink="/home/settings"  class="menu-side-bar__link">settings</a>
         </div>
-        <div href="#" class="menu-side-bar__item">
+        <div  class="menu-side-bar__item">
           <span class="material-icons">restore</span>
-          <a href="#" class="menu-side-bar__link">history</a>
+          <a routerLink="/home/history" class="menu-side-bar__link">history</a>
         </div>
-        <div href="#" class="menu-side-bar__item">
+        <div  class="menu-side-bar__item">
           <span class="material-icons"> equalizer</span>
-          <a href="#" class="menu-side-bar__link">statistic</a>
+          <a routerLink="/home/statistic" class="menu-side-bar__link">statistic</a>
         </div>
       </ul>
     </div>

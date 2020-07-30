@@ -25,7 +25,7 @@ homeRouter.post("/user/:id/update/balance", isAuthenticated, function(req, res){
         if (err){
             res.status(500).json({msg: 'Server error, try again later'})
         }
-        res.json(result)
+        res.json({balance})
     })    
 })
 homeRouter.post("/user/:id/update/expenses", isAuthenticated, function(req, res){
@@ -36,7 +36,7 @@ homeRouter.post("/user/:id/update/expenses", isAuthenticated, function(req, res)
         if (err){
             res.status(500).json({msg: 'Server error, try again later'})
         }
-        res.json(result)
+        res.json({expenses})
     })    
 })
 homeRouter.post("/user/:id/update/income", isAuthenticated, function(req, res){
@@ -47,7 +47,7 @@ homeRouter.post("/user/:id/update/income", isAuthenticated, function(req, res){
         if (err){
             res.status(500).json({msg: 'Server error, try again later'})
         }
-        res.json(result)
+        res.json({income})
     })    
 })
 homeRouter.post("/user/:id/create/default-finance", isAuthenticated, function(req, res) {

@@ -1,16 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
+// INTERFACE
 import {
   ISavingsOptions,
   ISavings,
 } from 'src/app/interface/finance/finance.interface';
 import { inOutAnimation } from 'src/app/animations/animations';
 
-import { UserService } from 'src/app/service/user/user.service';
+// SERVICE
+import { UserService } from '../../service/user/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { AppListenerService } from 'src/app/service/appListener/app-listener.service';
+
+// RXJS
+import { Observable, Subscription } from 'rxjs';
+
+// NGRX
+import { Store, select, ActionsSubject } from '@ngrx/store';
+import { selectUserIncome } from '../../state/userFinance/userFinance.selectors';
+import {
+  UserFinanceBalanceUpdateActions,
+  userFinanceActionsType,
+} from '../../state/userFinance/userFinance.actions';
+import {
+  addUserSavingsActions,
+  userSavingsActionsType,
+} from '../../state/userSaving/userSavings.actions';
+import { ofType } from '@ngrx/effects';
+import { wrapperLockActions } from 'src/app/appState/wrapperLock/wrapperLock.actions';
 
 @Component({
   selector: 'app-add-savings',
@@ -18,17 +36,24 @@ import { AppListenerService } from 'src/app/service/appListener/app-listener.ser
   styleUrls: ['./add-savings.component.scss'],
   animations: [inOutAnimation],
 })
-export class AddSavingsComponent implements OnInit {
+export class AddSavingsComponent implements OnInit, OnDestroy {
   optionsSavings: Array<ISavingsOptions>;
-
+  userIncome: number = 0;
+  userIncomeStore: Observable<number> = this.store.pipe(
+    select(selectUserIncome)
+  );
   formAdd: FormGroup;
+
+  addUserSavingsSub = new Subscription();
+  updateUserBalanceSub = new Subscription()
 
   constructor(
     private activateRoute: ActivatedRoute,
     private userService: UserService,
     private router: Router,
     private toastrService: ToastrService,
-    private appListener: AppListenerService
+    private store: Store,
+    private actionsub: ActionsSubject
   ) {
     this.formAdd = new FormGroup({
       options: new FormControl('', Validators.required),
@@ -38,14 +63,18 @@ export class AddSavingsComponent implements OnInit {
       ]),
     });
   }
-
+  ngOnDestroy(): void {
+   this.addUserSavingsSub.unsubscribe()
+   this.updateUserBalanceSub.unsubscribe()
+  }
   ngOnInit(): void {
+    this.userIncomeStore.subscribe((income) => (this.userIncome = income));
     this.userService
       .getSavings()
       .subscribe((data: Array<ISavingsOptions>): void => {
         this.optionsSavings = data;
       });
-    this.appListener.wrapperLockSubject.next(true)
+    this.store.dispatch( new wrapperLockActions({flag:true}))
   }
 
   get f() {
@@ -58,35 +87,42 @@ export class AddSavingsComponent implements OnInit {
     }
     const savings: ISavings = {
       name: this.formAdd.get('options').value.toLowerCase().replace(/\s+/, ''),
-      img: this.formAdd.get('options').value + '.png'.toLowerCase().replace(/\s+/, ''),
+      img:
+        this.formAdd.get('options').value +
+        '.png'.toLowerCase().replace(/\s+/, ''),
       amount: +this.formAdd.get('amount').value,
     };
-    const sumOfUserSavings = this.userService.getUserAmountSavings() + savings.amount;
-    if (sumOfUserSavings > this.userService.userFinaceData.income) {
-      this.toastrService.error('Sum of savings is more than income for this mounth');
+    const sumOfUserSavings =
+      this.userService.returnUserAmountSavings() + savings.amount;
+    if (sumOfUserSavings > this.userIncome) {
+      this.toastrService.error(
+        'Sum of savings is more than income for this mounth'
+      );
       return;
     }
-    this.userService.addUserSavings(savings).subscribe( (data) => {
-        this.toastrService.success(savings.name + ' add', 'Success');
-        this.formAdd.reset();
+
+    this.store.dispatch(new addUserSavingsActions(savings));
+    this.addUserSavingsSub = this.actionsub
+      .pipe(ofType(userSavingsActionsType.addUserSavingsSuccess))
+      .subscribe(() => {
         this.updateUserBalance();
-      },
-      (err) => this.closeWithError(err)
-    );
+      });
   }
 
-  updateUserBalance(): void {
-    this.userService.updateUserBalance().subscribe((data) => {
-      this.toastrService.success('Balance update', 'Success');
-      this.closePopUp();
-    });
+  updateUserBalance() {
+    this.store.dispatch(new UserFinanceBalanceUpdateActions());
+    this.updateUserBalanceSub = this.actionsub
+      .pipe(ofType(userFinanceActionsType.updateUserBalanceSuccess))
+      .subscribe(() => {
+        this.closePopUp();
+      });
   }
 
   closePopUp(): void {
     this.router.navigate([{ outlets: { popUpAdd: null } }], {
       relativeTo: this.activateRoute.parent,
     });
-    this.appListener.wrapperLockSubject.next(false)
+    this.store.dispatch( new wrapperLockActions({flag:false}))
   }
 
   closeWithError(err) {

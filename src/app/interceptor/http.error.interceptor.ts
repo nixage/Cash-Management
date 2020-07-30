@@ -11,7 +11,7 @@ import {
 import { Observable } from "rxjs";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { AuthService } from '../service/auth-service/auth.service';
+import { AuthService } from '../auth-module/service/auth-service/auth.service';
 
 @Injectable()
 

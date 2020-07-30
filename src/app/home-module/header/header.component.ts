@@ -1,65 +1,89 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from 'src/app/service/user/user.service';
-import { IFinance, ISpends, ISavings } from 'src/app/interface/finance/finance.interface';
 import { Router } from '@angular/router';
-import { IUser } from 'src/app/interface/user/user.interface';
-import { AuthService } from 'src/app/service/auth-service/auth.service';
-import { ToastrService } from 'ngx-toastr';
 
+// INTEFACE
+import { IUser } from 'src/app/interface/user/user.interface';
+import {
+  IFinance,
+  ISpends,
+  ISavings,
+} from 'src/app/interface/finance/finance.interface';
+
+
+// SERVICE
+import { AuthService } from '../../auth-module/service/auth-service/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { UserService } from '../service/user/user.service';
+
+// NGRX
+import { Store, select } from '@ngrx/store';
+import { selectUserSavings } from '../state/userSaving/userSavings.selectors';
+
+// RXJS
+import { Observable } from 'rxjs';
+import { selectUserSpends } from '../state/userSpends/userSpends.selectors';
+import { sideBarOpenActions } from 'src/app/appState/openSideBar/sideBar.actions';
+import { wrapperLockActions } from 'src/app/appState/wrapperLock/wrapperLock.actions';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
-
+export class HeaderComponent implements OnInit {  
   date: Date = new Date();
   user: IUser;
-  userFinance: IFinance;
+
+  userSavingsStore: Observable<ISavings[]> = this.store.pipe(
+    select(selectUserSavings)
+  )
+  userSpendsStore:Observable<ISpends[]> = this.store.pipe(
+    select(selectUserSpends)
+  )
   userExpenses: number = 0;
   userBalance: number = 0;
-  constructor(private userService: UserService,  private authService: AuthService, private toastrService: ToastrService, private router: Router) { }
+
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+    private toastrService: ToastrService,
+    private router: Router,
+    private store: Store<IFinance>,
+  ) {
+  }
 
   ngOnInit(): void {
-    const user = JSON.parse(localStorage.getItem('current-user'));
+    const user = this.userService.getCurrentUser()
     this.user = user;
-    this.userService.userFinanceSubject.subscribe( (data: IFinance) => {
-      this.userFinance = data;
-      this.userExpenses = data.expenses;
-      this.userBalance = data.balance;
+    this.userSpendsStore.subscribe( () => {
+      this.updateUserExpenses()
     })
-    this.userService.userSpendSubject.subscribe( data => {
-      this.updateUserExpenses(data)
-    })
-    this.userService.userSavingsSubject.subscribe( data => {
-      this.updateUserBalance(data)
+    this.userSavingsStore.subscribe( () => {
+      this.updateUserBalance()
     })
   }
 
-  updateUserExpenses(spends: ISpends[]){
+  updateUserExpenses() {
     this.userExpenses = 0;
-    this.userExpenses = spends.reduce( (acc, cur) => {
-      acc += cur.amount
-      return acc
-    },0)
+    this.userExpenses = this.userService.returnUserAmountSpends()
   }
-  updateUserBalance(data: ISavings[]){
+  updateUserBalance() {
     this.userBalance = 0;
-    this.userBalance = data.reduce( (acc, cur) => {
-      acc += cur.amount
-      return acc
-    },0)
+    this.userBalance = this.userService.returnUserAmountSavings()
   }
 
-  logOut(){
-    this.authService.logout().subscribe(data => {
-      this.toastrService.success('Bye Bye', 'Success')
+  openSideBar() {
+    this.store.dispatch(new wrapperLockActions({flag:true}))
+    this.store.dispatch(new sideBarOpenActions({flag:true}))
+  }
+
+  logOut() {
+    this.authService.logout().subscribe((data) => {
+      this.toastrService.success('Bye Bye', 'Success');
       localStorage.clear();
-      setTimeout(()=>{
-        this.router.navigateByUrl('auth/sign-in')
-      }, 1000)
-    })
+      setTimeout(() => {
+        this.router.navigateByUrl('auth/sign-in');
+      }, 1000);
+    });
   }
-
 }

@@ -34,6 +34,15 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { UpdateIncomeComponent } from './pop-up-update/update-income/update-income.component';
 
+import { StoreModule } from '@ngrx/store';
+import { userSavingsNode, userSavingsReducer } from './state/userSaving/userSavings.reducer';
+import { userFinanceNode, userFinanceReducer } from './state/userFinance/userFinance.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { userSavingsEffects } from './state/userSaving/userSavingsEffects';
+import { userFinanceEffects } from './state/userFinance/userFinanceEffects';
+import { userSpendsNode, userSpendsReducer } from './state/userSpends/userSpends.reducer';
+import { userSpendsEffects } from './state/userSpends/userSpendsEffects';
+
 
 @NgModule({
   declarations: [
@@ -73,6 +82,12 @@ import { UpdateIncomeComponent } from './pop-up-update/update-income/update-inco
     MatFormFieldModule,
     MatButtonModule,
     MatTooltipModule,
+
+    StoreModule.forFeature(userFinanceNode, userFinanceReducer),
+    StoreModule.forFeature(userSavingsNode, userSavingsReducer),
+    StoreModule.forFeature(userSpendsNode, userSpendsReducer),
+    EffectsModule.forFeature([userSavingsEffects,userFinanceEffects,userSpendsEffects])
+
   ],
   providers: [
     

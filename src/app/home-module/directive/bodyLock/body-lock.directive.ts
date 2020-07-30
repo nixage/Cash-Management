@@ -1,4 +1,7 @@
-import { Directive, Renderer2, HostListener, Injectable } from '@angular/core';
+import { Directive, Renderer2, HostListener, Injectable, ElementRef } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { sideBarOpenActions } from 'src/app/appState/openSideBar/sideBar.actions';
+import { wrapperLockActions } from 'src/app/appState/wrapperLock/wrapperLock.actions';
 
 @Directive({
   selector: '[bodyLock]'
@@ -10,13 +13,9 @@ import { Directive, Renderer2, HostListener, Injectable } from '@angular/core';
 export class BodyLockDirective {
 
 
-  constructor(private renderer: Renderer2) { }
+  constructor(private renderer: Renderer2, private store: Store, private el: ElementRef) { }
 
-  @HostListener("click") lockBodyElement(){
-    this.bodyLock()
-  }
-
-  bodyLock(){
-    this.renderer.addClass(document.body, 'lock');
+  @HostListener("document:click", ['$event']) handleClick(event: Event){
+    console.log(event)
   }
 }

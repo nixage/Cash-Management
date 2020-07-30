@@ -1,13 +1,24 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+
+// INTERFACE
 import {
   ISavings,
   ISpends,
-  IFinance,
 } from 'src/app/interface/finance/finance.interface';
-import { Router, ActivatedRoute } from '@angular/router';
-import { UserService } from 'src/app/service/user/user.service';
+
+// SERVICE
+import { UserService } from '../service/user/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { BodyLockDirective } from '../directive/bodyLock/body-lock.directive';
+
+// NGRX
+import { Store, select } from '@ngrx/store';
+import { selectUserIncome, selectUserBalance } from '../state/userFinance/userFinance.selectors';
+import { selectUserSavings } from '../state/userSaving/userSavings.selectors';
+import { selectUserSpends } from '../state/userSpends/userSpends.selectors';
+
+// RXJS
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-main',
@@ -15,35 +26,48 @@ import { BodyLockDirective } from '../directive/bodyLock/body-lock.directive';
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit {
-  userFinance: IFinance;
-  userSavings: ISavings[] = [];
-  userSpends: ISpends[] = [];
+  public userBalance: number = 0;
+  userBalanceStore: Observable<number> = this.store.pipe(
+    select(selectUserBalance)
+  )
+  public userIncome: number = 0;
+  userIncomeStore: Observable<number> = this.store.pipe(
+    select(selectUserIncome)
+  )
+  public userSavings: ISavings[] = []
+  userSavingStore: Observable<ISavings[]> = this.store.pipe(
+    select(selectUserSavings)
+  )
+  public userSpends: ISpends[] = [];
+  userSpendsStore: Observable<ISavings[]> = this.store.pipe(
+    select(selectUserSpends)
+  )
 
   constructor(
     private router: Router,
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
     private toastr: ToastrService,
-    private bodyLock: BodyLockDirective
+    public store: Store
   ) {}
 
   ngOnInit(): void {
-    this.userService.userFinanceSubject.subscribe((data: IFinance) => {
-      this.userFinance = null;
-      this.userFinance = data;
-    });
-    this.userService.userSavingsSubject.subscribe((data: Array<ISavings>) => {
-      this.userSavings = [];
-      this.userSavings = data;
-    });
-    this.userService.userSpendSubject.subscribe((data: Array<ISpends>) => {
-      this.userSpends = [];
-      this.userSpends = data;
-    });
+    this.userIncomeStore.subscribe( (income:number) => {
+      this.userIncome = income
+    })
+    this.userBalanceStore.subscribe( (balance:number) => {
+      this.userBalance = balance
+    })
+    this.userSavingStore.subscribe( (savings:ISavings[]) => {
+      this.userSavings = [...savings]
+    })
+    this.userSpendsStore.subscribe( (spends: ISpends[]) => {
+      this.userSpends = [...spends]
+    })
   }
 
   addSavings() {
-    if (this.userService.getUserAmountSavings() >= this.userFinance.income) {
+    if (this.userService.returnUserAmountSavings() >= this.userIncome) {
       this.toastr.error(
         'Your sum of savings is more that your income',
         'Error'
@@ -62,7 +86,7 @@ export class MainComponent implements OnInit {
   }
 
   addSpends() {
-    if (this.userService.getUserAmountSpends() >= this.userFinance.balance) {
+    if (this.userService.returnUserAmountSpends() >= this.userBalance) {
       this.toastr.error(
         'Your sum of spends is more that your balance',
         'Error'
