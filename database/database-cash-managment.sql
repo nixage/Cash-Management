@@ -10,8 +10,8 @@ create table users (
     login varchar(255) not null,
     email varchar(50) not null,
     password varchar(255) not null,
-    created_at timestamp  default(CURRENT_TIMESTAMP),
-    admin boolean default (false)
+    created_at timestamp  default CURRENT_TIMESTAMP(),
+    admin boolean default false
 );
 
 create table user_finance(
