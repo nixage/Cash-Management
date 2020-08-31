@@ -1,0 +1,227 @@
+@import "../../../assets/cssStyle/mixin.scss";
+@import "../../../assets/cssStyle/var.scss";
+
+.user-profile {
+  padding: 100px 0px 0px 0px;
+  @media (max-width: $md2+px) {
+    padding: 70px 0px 0px 0px;
+  }
+  @media (max-width: $md3+px) {
+    padding: 50px 0px 0px 0px;
+  }
+  @media (max-width: $md4+px) {
+    padding: 30px 0px 0px 0px;
+  }
+  &__body {
+    position: relative;
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: 24px;
+    margin: 0px 0px 20px 0px;
+  }
+
+  &__top {
+    display: flex;
+    align-items: center;
+    margin: 0px 0px 20px 0px;
+    border-bottom: 5px solid #62d18f;
+  }
+
+  &__avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__icon {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    max-width: 80px;
+    max-height: 80px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0px 0px 10px 0px;
+
+    &-default{
+      background-color: #696969;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:after{
+        content:'No Image';
+        font-size: 12px;
+        color: #fff;
+        text-transform: uppercase;
+      }
+    }
+    
+  }
+
+  &__choose-image {
+    cursor: pointer;
+    padding: 5px 7px;
+    line-height: 16px;
+    font-weight: 700;
+    margin: 0px 0px 5px 0px;
+    background: linear-gradient(180deg, #62d18f, #009a3e);
+    border-radius: 5px;
+    color: #fff;
+    label {
+      cursor: pointer;
+    }
+    input {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+    }
+  }
+
+  &__fullname {
+    font-weight: 500;
+    font-size: 22px;
+    align-self: flex-start;
+    margin: 10px 0px 0px 0px;
+  }
+
+  &__info {
+    padding: 0px 0px 0px 10px;
+  }
+  &__button {
+    @media (min-width: $md4+px) {
+      padding: 10px 0px 0px 30px;
+    }
+    @media (max-width: $md4+px) {
+      padding: 10px 0px 0px 0px;
+      text-align: center;
+    }
+    button {
+      margin: 0px 10px;
+      @media (max-width: $md4+px) {
+        margin: 10px;
+      }
+    }
+  }
+
+  &__back {
+    position: absolute;
+    right: 0;
+    top: 0;
+    span {
+      cursor: pointer;
+      color: #000;
+      font-size: 32px;
+    }
+  }
+}
+
+.info-user {
+  &__item {
+    margin: 0px 0px 25px 0px;
+    &:last-child {
+      margin: 0px;
+    }
+  }
+}
+.item-user-info {
+  &__title {
+    font-weight: 700;
+    font-size: 24px;
+    text-transform: uppercase;
+  }
+
+  &__body {
+    padding: 20px 0px 0px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    @media (max-width: $md4+px) {
+      padding: 20px 0px 0px 0px;
+    }
+  }
+
+  &__text {
+    position: relative;
+    color: #696969;
+    font-size: 18px;
+    margin: 0px 0px 10px 0px;
+    cursor: context-menu;
+    span {
+      color: #000;
+    }
+    input {
+      color: #000;
+      font-size: 18px;
+      background-color: transparent;
+      @media (max-width: $md4+px) {
+        width: 100%;
+        margin: 2px 0px 0px 0px;
+      }
+    }
+
+    @media (min-width: 992px) {
+      &:hover {
+        .item-user-info__text-edit {
+          opacity: 1;
+          visibility: visible;
+          pointer-events: auto;
+        }
+      }
+    }
+
+    &-edit {
+      transition: all 0.3s ease 0s;
+      position: absolute;
+      top: 2px;
+      left: 0.5px;
+      transform: translate(-100%, 0%);
+      cursor: pointer;
+      font-size: 20px;
+      width: 20.5px;
+      @media (min-width: $md2+px) {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+    }
+  }
+
+  &__error {
+    color: red;
+    padding-top: 5px;
+  }
+
+  &__change-password {
+    cursor: pointer;
+    padding: 0px 0px 0px 10px;
+    color: #000;
+    background: linear-gradient(to left, #7effb2, #00b147);
+    background-size: 3200px 100%;
+    -webkit-background-clip: text;
+    animation: animate-text;
+    animation-delay: 0s;
+    animation-duration: 5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    @media (max-width: $md4+px) {
+      padding: 0;
+    }
+  }
+}
+
+@-webkit-keyframes animate-text {
+  0% {
+  background-position: 0 3200px;
+  }
+  100% {
+  background-position: 3200px 0;
+  }
+ }
+ 

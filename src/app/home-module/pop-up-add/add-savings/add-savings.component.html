@@ -10,7 +10,7 @@
         Сhoose one of the methods of storing money 
       </div>
 
-      <div class="pop-up-form__savings">
+      <div class="pop-up-form__savings pop-up-form__radio-group">
         <mat-radio-group formControlName="options" >
           <p class="pop-up-form__item" *ngFor="let item of optionsSavings">
             <mat-radio-button value="{{item.name}}" style="color: white;">{{item.name}}</mat-radio-button>

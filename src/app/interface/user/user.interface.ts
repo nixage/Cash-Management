@@ -15,3 +15,13 @@ export interface IUser{
   firstName: string,
   lastName: string,
 }
+
+export interface IUserInfo{
+  id: number,
+  firstName: string,
+  lastName: string,
+  email: string,
+  lastVisit: string,
+  balance: number,
+  icon?: string
+}

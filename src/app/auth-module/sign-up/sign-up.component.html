@@ -79,8 +79,13 @@
         </div>
         <div [@inOutAnimation] *ngIf="f.password.errors  && f.password.touched">
           <div class="error error-length" *ngIf="f.password.errors.required">Required</div>
-          <div class="error error-length" *ngIf="f.password.errors.minlength">Min length = 3</div>
+          <div class="error error-length" *ngIf="f.password.errors.minlength">Min length = 5</div>
           <div class="error error-pattern"  *ngIf="f.password.errors.pattern">'<>' - warning</div>
+          <div class="error error-pattern"  *ngIf="f.password.errors.inValidPassword">
+            <p>Password must containt at least 1 uppercase and lowercase letter</p>
+            <p>Password must containt at least 1 numeric character</p>
+            <p>Password not must contain special symbol *?@</p>
+          </div>
         </div>
       </div>
       <div class="form-sign__button">

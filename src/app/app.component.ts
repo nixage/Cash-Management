@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit,  } from '@angular/core';
 
 // NGRX
 import { Store, select } from '@ngrx/store';
@@ -23,9 +23,12 @@ export class AppComponent implements OnInit, AfterViewInit{
 
   constructor(public store: Store, private router: Router) {
   }
+
+  
+
   ngAfterViewInit(): void {
     this.wrapperStore.subscribe( (flag:boolean) => {
-      // WHY ???? ERROR
+      // WHY ???? ERROR (ExpressionChangedAfterItHasBeenCheckedError)
       setTimeout( () => {
         this.wrapperLock.next(flag)
       }, 0)

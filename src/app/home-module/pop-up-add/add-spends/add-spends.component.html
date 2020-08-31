@@ -10,7 +10,7 @@
         Choose where we will take your money
       </div>
 
-      <div class="pop-up-form__savings">
+      <div class="pop-up-form__spends pop-up-form__radio-group">
         <mat-radio-group formControlName="userSavings" class="radio-group">
           <p class="pop-up-form__item" *ngFor="let item of userSavings">
             <mat-radio-button value="{{item.id}}" style="color: white;">{{item.name}}</mat-radio-button>

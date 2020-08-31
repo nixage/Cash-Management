@@ -1,9 +1,14 @@
-import { IFinance } from '../../../interface/finance/finance.interface';
 import { UserFinanceActions, userFinanceActionsType } from './userFinance.actions';
 
 export const userFinanceNode = 'userFinance';
 
-const initialState: IFinance = {
+export interface IUserFinanceStore {
+  balance: number,
+  expenses: number,
+  income: number
+}
+
+const initialState: IUserFinanceStore = {
   balance: 0,
   expenses: 0,
   income: 0

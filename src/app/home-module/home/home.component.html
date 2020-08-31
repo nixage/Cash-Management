@@ -24,21 +24,21 @@
 
 
 <div class="side-bar" [ngClass]="{'open': (sideBarOpen | async)}">
-  <div class="side-bar__body">
+  <div class="side-bar__body" (clickOutSideBar)='clickOutSideBar()'>
     <div class="side-bar__close" (click)="closeSideBar()"></div>
     <div class="side-bar__menu menu-side-bar">
       <ul class="menu-side-bar__list">
         <div class="menu-side-bar__item">
-          <span class="material-icons">settings</span>
-          <a routerLink="/home/settings"  class="menu-side-bar__link">settings</a>
+          <span class="material-icons">person</span>
+          <a routerLink="/home/profile"  class="menu-side-bar__link" (click)="closeSideBar()">profile</a>
         </div>
         <div  class="menu-side-bar__item">
           <span class="material-icons">restore</span>
-          <a routerLink="/home/history" class="menu-side-bar__link">history</a>
+          <a routerLink="/home/history" class="menu-side-bar__link" (click)="closeSideBar()">history</a>
         </div>
         <div  class="menu-side-bar__item">
           <span class="material-icons"> equalizer</span>
-          <a routerLink="/home/statistic" class="menu-side-bar__link">statistic</a>
+          <a routerLink="/home/statistic" class="menu-side-bar__link" (click)="closeSideBar()">statistic</a>
         </div>
       </ul>
     </div>

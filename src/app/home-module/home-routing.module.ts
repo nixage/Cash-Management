@@ -15,7 +15,7 @@ import { AddSpendsComponent } from './pop-up-add/add-spends/add-spends.component
 
 const routes: Routes = [
   {path: '', component: HomeComponent, canActivate: [HomeGuard]},
-  {path: 'settings', loadChildren: () => import('../settings-module/settings.module').then(m => m.SettingsModule)},
+  {path: 'profile', loadChildren: () => import('../profile-module/profile.module').then(m => m.ProfileModule)},
   {path: 'history', loadChildren: () => import('../history-module/history.module').then(m => m.HistoryModule)},
   {path: 'statistic', loadChildren: () => import('../statistic-module/statistic.module').then(m => m.StatisticModule)},
   {path: 'addSavings', component: AddSavingsComponent, outlet: 'popUpAdd'},

@@ -4,6 +4,7 @@ import { inOutAnimation } from '../../animations/animations';
 import { AuthService } from '../service/auth-service/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
+import { validatePassword } from './sign-up.custom.validator';
 
 @Component({
   selector: 'app-sign-up',
@@ -22,7 +23,7 @@ export class SignUpComponent implements OnInit {
       lastName: new FormControl('', [Validators.required,Validators.minLength(2), Validators.pattern('[a-zA-ZА-Яа-я]+')]),
       email: new FormControl('', [Validators.required, Validators.email,]),
       login: new FormControl('', [Validators.required, Validators.minLength(3),Validators.pattern('[a-zA-Z]+')]),
-      password: new FormControl('', [Validators.required, Validators.minLength(3),Validators.pattern('[^<>]+')]),
+      password: new FormControl('', [Validators.required, Validators.minLength(5),Validators.pattern('[^<>]+'), validatePassword]),
     })
   }
 
@@ -59,3 +60,5 @@ export class SignUpComponent implements OnInit {
   }
 
 }
+
+
