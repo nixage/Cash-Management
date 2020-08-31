@@ -2,13 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 // INTEFACE
-import { IUser } from 'src/app/interface/user/user.interface';
-import {
-  IFinance,
-  ISpends,
-  ISavings,
-} from 'src/app/interface/finance/finance.interface';
-
+import { IUserInfo } from 'src/app/interface/user/user.interface';
+import { IUserFinanceStore } from '../state/userFinance/userFinance.reducer';
 
 // SERVICE
 import { AuthService } from '../../auth-module/service/auth-service/auth.service';
@@ -17,29 +12,29 @@ import { UserService } from '../service/user/user.service';
 
 // NGRX
 import { Store, select } from '@ngrx/store';
-import { selectUserSavings } from '../state/userSaving/userSavings.selectors';
+import { wrapperLockActions } from 'src/app/appState/wrapperLock/wrapperLock.actions';
+import { sideBarOpenActions } from 'src/app/appState/openSideBar/sideBar.actions';
+import { selectUserInfo } from '../state/userInfo/userInfo.selectors';
+import { selectUserFinance } from '../state/userFinance/userFinance.selectors';
 
 // RXJS
 import { Observable } from 'rxjs';
-import { selectUserSpends } from '../state/userSpends/userSpends.selectors';
-import { sideBarOpenActions } from 'src/app/appState/openSideBar/sideBar.actions';
-import { wrapperLockActions } from 'src/app/appState/wrapperLock/wrapperLock.actions';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {  
+export class HeaderComponent implements OnInit {
   date: Date = new Date();
-  user: IUser;
+  user: IUserInfo;
 
-  userSavingsStore: Observable<ISavings[]> = this.store.pipe(
-    select(selectUserSavings)
-  )
-  userSpendsStore:Observable<ISpends[]> = this.store.pipe(
-    select(selectUserSpends)
-  )
+  userFinanceStore: Observable<IUserFinanceStore> = this.store.pipe(
+    select(selectUserFinance)
+  );
+  userInfoStore: Observable<IUserInfo> = this.store.pipe(
+    select(selectUserInfo)
+  );
   userExpenses: number = 0;
   userBalance: number = 0;
 
@@ -48,33 +43,22 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     private toastrService: ToastrService,
     private router: Router,
-    private store: Store<IFinance>,
-  ) {
-  }
+    public store: Store<IUserFinanceStore>
+  ) {}
 
   ngOnInit(): void {
-    const user = this.userService.getCurrentUser()
-    this.user = user;
-    this.userSpendsStore.subscribe( () => {
-      this.updateUserExpenses()
+    this.userInfoStore.subscribe((user: IUserInfo) => {
+      this.user = user;
+    });
+    this.userFinanceStore.subscribe( (data:IUserFinanceStore) => {
+      this.userBalance = data.balance
+      this.userExpenses = data.expenses
     })
-    this.userSavingsStore.subscribe( () => {
-      this.updateUserBalance()
-    })
-  }
-
-  updateUserExpenses() {
-    this.userExpenses = 0;
-    this.userExpenses = this.userService.returnUserAmountSpends()
-  }
-  updateUserBalance() {
-    this.userBalance = 0;
-    this.userBalance = this.userService.returnUserAmountSavings()
   }
 
   openSideBar() {
-    this.store.dispatch(new wrapperLockActions({flag:true}))
-    this.store.dispatch(new sideBarOpenActions({flag:true}))
+    this.store.dispatch(new wrapperLockActions({ flag: true }));
+    this.store.dispatch(new sideBarOpenActions({ flag: true }));
   }
 
   logOut() {

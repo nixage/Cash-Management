@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { IFinance } from 'src/app/interface/finance/finance.interface';
+import { IUserFinanceStore } from './userFinance.reducer';
 
 export enum userFinanceActionsType{
   getUserFinance = '[USER_FINANCE] get',
@@ -18,7 +18,7 @@ export class getUserFinanceActions implements Action {
 }
 export class getUserFinanceSuccessActions implements Action {
   readonly type =  userFinanceActionsType.getUserFinanceSuccess
-  constructor(public payload:IFinance){}
+  constructor(public payload:IUserFinanceStore){}
 }
 export class UserFinanceIncomeUpdateActions implements Action {
   readonly type =  userFinanceActionsType.updateUserIncome

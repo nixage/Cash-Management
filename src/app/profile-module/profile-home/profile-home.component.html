@@ -1,0 +1,136 @@
+<div class="user-profile">
+  <div class="container">
+    <div class="user-profile__body">
+      <a
+        [routerLink]="['../../']"
+        (click)="backPage()"
+        class="user-profile__back"
+        matTooltip="Back ?"
+        matTooltipPosition="right"
+        matTooltipClass="tooltip-back"
+      >
+        <span class="material-icons">first_page</span>
+      </a>
+      <div class="user-profile__title">User profile</div>
+      <div class="user-profile__top">
+        <div class="user-profile__avatar">
+          <div class="user-profile__icon" *ngIf="user.icon; else imgdef" [ngStyle]="{ 'backgroundImage': 'url(' + userIcon + ')'}"></div>
+          <ng-template #imgdef>
+            <div class="user-profile__icon user-profile__icon-default"></div>
+          </ng-template>
+          <div class="user-profile__choose-image">
+            <label>
+              <p>Choose image</p>
+              <input type="file" (change)="chooseFile($event.target.files)" />
+            </label>
+          </div>
+        </div>
+        <div class="user-profile__fullname">
+          {{ user.firstName }} {{ user.lastName }}
+        </div>
+      </div>
+      <div class="user-profile__info info-user">
+        <div class="info-user__item item-user-info">
+          <div class="item-user-info__title">user information</div>
+          <form class="item-user-info__body" [formGroup]="formUser" novalidate>
+            <div class="item-user-info__text">
+              First Name:
+              <input
+                spellcheck="false"
+                type="text"
+                formControlName="firstName"
+                #firstName
+              />
+              <span
+                *ngIf="!enableForm"
+                class="item-user-info__text-edit material-icons"
+                (click)="editField(firstName)"
+                >create</span
+              >
+              <div
+                class="item-user-info__error"
+                [@inOutAnimation]
+                *ngIf="f.firstName.errors && f.firstName.touched"
+              >
+                <p *ngIf="f.firstName.errors.required">Required</p>
+              </div>
+            </div>
+            <div class="item-user-info__text">
+              Last Name:
+              <input
+                spellcheck="false"
+                type="text"
+                formControlName="lastName"
+                #lastName
+              />
+              <span
+                *ngIf="!enableForm"
+                class="item-user-info__text-edit material-icons"
+                (click)="editField(lastName)"
+                >create</span
+              >
+              <div
+                class="item-user-info__error"
+                [@inOutAnimation]
+                *ngIf="f.lastName.errors && f.lastName.touched"
+              >
+                <p *ngIf="f.lastName.errors.required">Required</p>
+              </div>
+            </div>
+            <div class="item-user-info__text">
+              Email:
+              <input
+                spellcheck="false"
+                type="text"
+                formControlName="email"
+                #email
+              />
+              <span
+                *ngIf="!enableForm"
+                class="item-user-info__text-edit material-icons"
+                (click)="editField(email)"
+                >create</span
+              >
+              <div
+                class="item-user-info__error"
+                [@inOutAnimation]
+                *ngIf="f.email.errors && f.email.touched"
+              >
+                <p *ngIf="f.email.errors.email">Invalid email</p>
+                <p *ngIf="f.email.errors.required">Required</p>
+              </div>
+            </div>
+            <div class="item-user-info__text">
+              Balance:
+              <span>{{ user.balance }}</span>
+            </div>
+            <div class="item-user-info__text">
+              Last visit: <span>{{ user.lastVisit | date: "dd:MM:yyyy" }}</span>
+            </div>
+          </form>
+        </div>
+        <div class="info-user__item item-user-info">
+          <div class="item-user-info__title">user settings</div>
+          <div class="item-user-info__body">
+            <div
+              class="item-user-info__text item-user-info__change-password"
+              (click)="changePassword()"
+            >
+              change password
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="user-profile__button">
+        <button
+          class="btn"
+          (click)="saveForm()"
+          [disabled]="formUser.invalid || !formUser.touched || !formUser.dirty"
+        >
+          <span>Save</span>
+        </button>
+        <button class="btn" (click)="resetForm()"><span>Cancel</span></button>
+      </div>
+    </div>
+  </div>
+</div>

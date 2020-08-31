@@ -25,12 +25,16 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { sideBarNode, sideBarReducer } from './appState/openSideBar/sideBar.reducer';
 import { wrapperNode, wrapperReducer } from './appState/wrapperLock/wrapperLock.reducer';
+import { PasswordCheckComponent } from './sharedComponent/password-check/password-check.component';
+import { ChangePasswordComponent } from './sharedComponent/change-password/change-password.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NotFoundComponent,
+    PasswordCheckComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,

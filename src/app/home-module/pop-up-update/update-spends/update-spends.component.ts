@@ -42,6 +42,7 @@ export class UpdateSpendsComponent implements OnInit,OnDestroy {
   updateUserSavingsSub = new Subscription()
   updateUserSpendsSub = new Subscription()
   deleteUserSpendsSub = new Subscription()
+  getUserSpendsStoreSub = new Subscription()
 
   userSpendStore:Observable<ISpends[]> = this.store.pipe(
     select(selectUserSpends)
@@ -62,12 +63,13 @@ export class UpdateSpendsComponent implements OnInit,OnDestroy {
     this.updateUserSavingsSub.unsubscribe()
     this.updateUserSpendsSub.unsubscribe()
     this.deleteUserSpendsSub.unsubscribe()
+    this.getUserSpendsStoreSub.unsubscribe()
   }
 
   ngOnInit(): void {
     this.activateRoute.queryParams.subscribe((data) => {
       const id = +data['id'];
-      this.userSpendStore.subscribe( (data:ISpends[]) => {
+      this.getUserSpendsStoreSub = this.userSpendStore.subscribe( (data:ISpends[]) => {
         this.spends = data
         this.spend = data.find(val => val.id === id)
       })

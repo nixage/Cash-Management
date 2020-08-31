@@ -6,7 +6,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { UserService } from '../../service/user/user.service';
 import { ISpends } from '../../../interface/finance/finance.interface';
 import { userSpendsActionsType, getUserSpendsSuccessActions, userSpendsActions, addUserSpendsSuccessActions, deleteUserSpendsSuccessActions } from './userSpends.actions';
-import { addUserSavingsSuccessActions, updateUserSavingsSuccessActions } from '../userSaving/userSavings.actions';
+import { updateUserSavingsSuccessActions } from '../userSaving/userSavings.actions';
 
 @Injectable()
 export class userSpendsEffects {

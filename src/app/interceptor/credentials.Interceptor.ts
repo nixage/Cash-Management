@@ -1,4 +1,4 @@
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from "@angular/common/http";
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 
@@ -13,6 +13,7 @@ export class credentialsInterceptor implements HttpInterceptor {
     request = request.clone({
       withCredentials: true
     });
+    JSON.stringify(request.body)
 
     return next.handle(request)
   }
